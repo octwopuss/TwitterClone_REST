@@ -44,7 +44,7 @@
         <div class="container-fluid">
           <div class="row">
             <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
-              <form id="postForm">
+              <form id="postForm" action="post">
                 <div class="form-group">
                   <h3>Description</h3>
                   <textarea class="form-control" rows="4" name="description" id="description"></textarea>
@@ -55,29 +55,21 @@
               </form>
             </nav>
             <div class="col-md-5">
-            @foreach($posts as $post)
-            
-            @php         
-              $tags = explode(",", $post->tags);
-            @endphp
+          
               <div class="card mb-3">                
                 <img class="rounded" style="height: 450px; width: 100%; display: block;" 
-                src="{{$post->image}}" alt="Card image">
+                src="##" alt="Card image">
                 <div class="card-body">
-                  <p class="card-text">{{$post->description}}</p>
+                  <p class="card-text">description</p>
                 </div>                
                 <div class="card-body">
-                <span>tags : &nbsp;&nbsp;&nbsp;</span>
-                @foreach($tags as $tag)
-                  <a href="#" class="card-link">{{$tag}}</a>
-                @endforeach
-                
+                <span>tags : &nbsp;&nbsp;&nbsp;</span>               
+                  <a href="#" class="card-link">tags</a>               
                 </div>
                 <div class="card-footer text-muted">
                   2 days ago
                 </div>
-              </div>
-            @endforeach
+              </div>  
             </div>
             <div class="col-md-2">
              <div class="container-fluid">
@@ -104,6 +96,14 @@
         <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="https://bootswatch.com/_assets/js/custom.js"></script>
         <script type="text/javascript">
+
+        function getContent(){
+          let url = 'http://localhost:8000/api/posts';
+          fetch(url)
+            .then((response)=>{ return response.json();})
+            .then((myJson)=>console.log(myJson));
+        }             
+
         document.querySelector("#postForm")
           .addEventListener("submit", function(event){
             event.preventDefault();

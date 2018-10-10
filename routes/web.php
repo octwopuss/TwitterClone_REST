@@ -13,8 +13,5 @@ use App\Post;
 
 Route::get('/', function () {
 
-    $posts = Post::all();
-
-    return view('index', compact('posts'));
+    return view('index');
 });
-=
