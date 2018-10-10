@@ -10,6 +10,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
         #upload_image {
           opacity: 0;
@@ -25,7 +26,7 @@
         <![endif]-->
 
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <a class="navbar-brand" href="#">Home</a>
+            <a class="navbar-brand" href="#">Bagi Momen <i class="fa fa-heart"></i></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -48,32 +49,22 @@
                 <div class="form-group">
                   <h3>Description</h3>
                   <textarea class="form-control" rows="4" name="description" id="description"></textarea>
-                  <label for="upload_image" class="input-group-append btn btn-warning">+ upload image</label>
+                  <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>
                   <input type="file" id="upload_image">
                 </div>
-                <button type="submit" class="btn btn-primary" >Post!</button>
+                <button type="submit" class="btn btn-success" >Post!</button>
               </form>
             </nav>
             <div class="col-md-5">
-          
-              <div class="card mb-3">                
-                <img class="rounded" style="height: 450px; width: 100%; display: block;" 
-                src="##" alt="Card image">
-                <div class="card-body">
-                  <p class="card-text">description</p>
-                </div>                
-                <div class="card-body">
-                <span>tags : &nbsp;&nbsp;&nbsp;</span>               
-                  <a href="#" class="card-link">tags</a>               
-                </div>
-                <div class="card-footer text-muted">
-                  2 days ago
-                </div>
-              </div>  
-            </div>
-            <div class="col-md-2">
+              <br><br>
+              <div class="moments">
+                                          
+              </div>
+            </div>              
+            <div class="col-md-3">
+              <br><br>
              <div class="container-fluid">
-               <h2>Popular Tags</h2>
+               <h2>Momen terpopuler</h2>
                <span class="badge badge-primary">Cat</span>   
                <span class="badge badge-primary">Dog</span>          
                <span class="badge badge-primary">Tiger</span>
@@ -97,12 +88,62 @@
         <script src="https://bootswatch.com/_assets/js/custom.js"></script>
         <script type="text/javascript">
 
-        function getContent(){
+        const momentsElement = document.querySelector('.moments');        
+
+        listAllMoments();
+
+        function listAllMoments(){
           let url = 'http://localhost:8000/api/posts';
           fetch(url)
-            .then((response)=>{ return response.json();})
-            .then((myJson)=>console.log(myJson));
-        }             
+            .then((response)=> response.json())
+            .then((moments)=> {
+              console.log(moments);
+              moments.forEach(moment => {                          
+                const card = document.createElement('div');                
+                const cardBody1 = document.createElement('div');
+                const cardBody2 = document.createElement('div');
+                const cardFooter = document.createElement('div');
+                const span = document.createElement('span');
+                const tags = document.createElement('a'); 
+                const desc = document.createElement('p');  
+                const image = document.createElement('img'); 
+                
+                card.setAttribute('class', 'card mb-3');
+                image.setAttribute('class', 'rounded');
+                image.setAttribute('src', moment.image);
+                image.style.height = '100%';
+                image.style.width = '100%';
+                image.style.display = 'block';
+                cardBody1.setAttribute('class', 'card-body');
+                cardBody2.setAttribute('class', 'card-body');
+                tags.setAttribute('class', 'card-link');
+                cardFooter.setAttribute('class', 'card-footer text-muted');                
+
+                //DESCRIPTION 
+                desc.textContent = moment.description;                                
+
+                //TAGS
+                span.textContent= "tags: ";
+                tags.textContent = moment.tags;
+                tags.href = "#";
+
+                //CARD FOOTER
+                cardFooter.textContent = "2 days ago";
+                
+                cardBody1.appendChild(desc);
+                cardBody2.appendChild(span);                
+                cardBody2.appendChild(tags);                
+
+                card.appendChild(image);                
+                card.appendChild(cardBody1);                
+                card.appendChild(cardBody2);
+                card.appendChild(cardFooter);
+
+                
+                momentsElement.appendChild(card);
+              });              
+            });
+          }
 
         document.querySelector("#postForm")
           .addEventListener("submit", function(event){
