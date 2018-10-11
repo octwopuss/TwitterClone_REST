@@ -29,34 +29,28 @@
             <a class="navbar-brand" href="#">Bagi Momen <i class="fa fa-heart"></i></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- <div class="collapse navbar-collapse" id="navbarColor01">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-              </ul>
-              <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search">
-                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-              </form>
-            </div> -->
+            </button>            
         </nav>
         <div class="container-fluid">
           <div class="row">
             <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
-              <form id="postForm" action="post">
+              <form id="upload_form" action="post" enctype="multipart/form-data">
+                <meta name="csrf-token" content="{{ csrf_token() }}" />
+                <br>
                 <div class="form-group">
                   <h3>Description</h3>
                   <textarea class="form-control" rows="4" name="description" id="description"></textarea>
                   <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>
-                  <input type="file" id="upload_image">
+                  <input type="file" id="upload_image" name="upload_image">
                 </div>
                 <button type="submit" class="btn btn-success" >Post!</button>
               </form>
             </nav>
             <div class="col-md-5">
-              <br><br>
+              <br><br>              
+              <div class="loading">
+                <center> <img src="{{asset('/img/loading2.gif')}}" style="width: 100px; height: 100px;"></center>                
+              </div>
               <div class="moments">
                                           
               </div>
@@ -89,15 +83,18 @@
         <script type="text/javascript">
 
         const momentsElement = document.querySelector('.moments');        
-
+        const form = document.querySelector('form');
+        const loadingElement = document.querySelector('.loading');                
+        const API_URL = 'http://localhost:8000/api/posts';
         listAllMoments();
 
         function listAllMoments(){
-          let url = 'http://localhost:8000/api/posts';
-          fetch(url)
+          momentsElement.innerHTML = '';                    
+          fetch(API_URL, {method: 'GET'})
             .then((response)=> response.json())
-            .then((moments)=> {
+            .then((moments)=> { 
               console.log(moments);
+              moments.reverse();
               moments.forEach(moment => {                          
                 const card = document.createElement('div');                
                 const cardBody1 = document.createElement('div');
@@ -128,7 +125,7 @@
                 tags.href = "#";
 
                 //CARD FOOTER
-                cardFooter.textContent = "2 days ago";
+                cardFooter.textContent = moment.created_at;
                 
                 cardBody1.appendChild(desc);
                 cardBody2.appendChild(span);                
@@ -139,20 +136,34 @@
                 card.appendChild(cardBody2);
                 card.appendChild(cardFooter);
 
+                loadingElement.style.display = 'none';
                 
                 momentsElement.appendChild(card);
               });              
             });
           }
 
-        document.querySelector("#postForm")
-          .addEventListener("submit", function(event){
-            event.preventDefault();
-            var description = $('#description').val();
-            var path = $('#upload_image').val();
-            var image = path.replace(/^.*\\/, "");
-            console.log(description, image);
+        form.addEventListener('submit', function(event){
+          event.preventDefault();                 
+          var description = $('#description').val();          
+          let data = new FormData(this);          
+          data.append('description', description);
+          loadingElement.style.display = 'block';
+          $.ajax({
+            url : API_URL,
+            method : 'POST',
+            headers : {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data : data,
+            enctype: 'multipart/form-data',            
+            success : listAllMoments(),
+            contentType : false, // prevents ajax sending the content type header.The content type header make Laravel 
+                                // handel the FormData Object as some serialized string.                
+            cache : false,
+            processData : false,
           });
+        });
         
 
         </script>
