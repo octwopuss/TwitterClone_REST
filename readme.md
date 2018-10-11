@@ -1,3 +1,3 @@
 ## TODO LIST 
-[ ] Tags system
-[ ] Authentication
+- [ ] Tags system
+- [ ] Authentication
