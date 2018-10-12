@@ -25,11 +25,21 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav class="navbar navbar-expand-lg  navbar-light bg-light">
             <a class="navbar-brand" href="#">Bagi Momen <i class="fa fa-heart"></i></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
-            </button>            
+            </button>    
+            <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+              <ul class="navbar-nav ml-auto">
+                  <li class="nav-item">
+                      <a class="nav-link" href="#"> <span class="fa fa-user"></span>  {{ Auth::user()->name }} </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{{ route('logout') }}"><span class="fa fa-power-off"></span> Logout</a>
+                  </li>
+              </ul>
+          </div>     
         </nav>
         <div class="container-fluid">
           <div class="row">
@@ -84,16 +94,18 @@
 
         const momentsElement = document.querySelector('.moments');        
         const form = document.querySelector('form');
-        const loadingElement = document.querySelector('.loading');                
-        const API_URL = 'http://localhost:8000/api/posts';
+        const loadingElement = document.querySelector('.loading');  
+        const deleteButton = document.querySelector('#deletePost');              
+        const API_URL = 'http://localhost:8000/api/posts';        
+  
         listAllMoments();
 
         function listAllMoments(){
-          momentsElement.innerHTML = '';                    
+          momentsElement.innerHTML = '';                
           fetch(API_URL, {method: 'GET'})
             .then((response)=> response.json())
             .then((moments)=> { 
-              console.log(moments);
+              console.log(moments);console.log(moments);
               moments.reverse();
               moments.forEach(moment => {                          
                 const card = document.createElement('div');                
@@ -104,10 +116,12 @@
                 const tags = document.createElement('a'); 
                 const desc = document.createElement('p');  
                 const image = document.createElement('img'); 
-                
+                const imagePath = window.location.origin + '/storage/' + moment.image;
+                const deleteButton = document.createElement('a');
+
                 card.setAttribute('class', 'card mb-3');
                 image.setAttribute('class', 'rounded');
-                image.setAttribute('src', moment.image);
+                image.setAttribute('src', imagePath);
                 image.style.height = '100%';
                 image.style.width = '100%';
                 image.style.display = 'block';
@@ -124,8 +138,19 @@
                 tags.textContent = moment.tags;
                 tags.href = "#";
 
+                //BREAD FOOTER
+                deleteButton.setAttribute('class', 'badge badge-danger');  
+                deleteButton.setAttribute('id', 'deletePost');   
+                deleteButton.href = window.location.origin + '/api/posts/delete/' + moment.id;                                       
+                deleteButton.textContent = 'Delete';
+                deleteButton.style.float = 'right';   
+                deleteButton.onclick = function(){
+                  listAllMoments();
+                }           
+                
                 //CARD FOOTER
                 cardFooter.textContent = moment.created_at;
+                cardFooter.appendChild(deleteButton);
                 
                 cardBody1.appendChild(desc);
                 cardBody2.appendChild(span);                
@@ -141,7 +166,7 @@
                 momentsElement.appendChild(card);
               });              
             });
-          }
+          }        
 
         form.addEventListener('submit', function(event){
           event.preventDefault();                 
@@ -157,7 +182,10 @@
             },
             data : data,
             enctype: 'multipart/form-data',            
-            success : listAllMoments(),
+            success : function(){
+              momentsElement.innerHTML = ''; 
+              location.reload();
+            },
             contentType : false, // prevents ajax sending the content type header.The content type header make Laravel 
                                 // handel the FormData Object as some serialized string.                
             cache : false,

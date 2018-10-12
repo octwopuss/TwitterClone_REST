@@ -14,4 +14,8 @@ use App\Post;
 Route::get('/', function () {
 
     return view('index');
-});
+})->name('moment.home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

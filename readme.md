@@ -1,3 +1,9 @@
 ## TODO LIST 
-- [ ] Tags system
 - [ ] Authentication
+- [ ] BREAD
+    - [x] Browse
+    - [x] Read
+    - [ ] Edit
+    - [ ] Add
+    - [ ] Delete
+- [ ] Tags system
