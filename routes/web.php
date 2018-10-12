@@ -11,11 +11,7 @@ use App\Post;
 |
 */
 
-Route::get('/', function () {
-
-    return view('index');
-})->name('moment.home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::GET('/', 'UserController@index')->name('dashboard');
+Route::GET('/login', 'UserController@login')->name('login');
+Route::POST('/Auth', 'UserController@AuthenticateUser')->name('auth.user');
+Route::GET('/logout', 'UserController@logout')->name('logout');
