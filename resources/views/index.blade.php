@@ -11,6 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="{{asset('css/tagsinput.css')}}">
         <style>
         #upload_image {
           opacity: 0;
@@ -47,11 +48,12 @@
               <form id="upload_form" action="post" enctype="multipart/form-data">
                 <meta name="csrf-token" content="{{ csrf_token() }}" />
                 <br>
-                <div class="form-group">
+                <div class="form-group">                  
                   <h3>Description</h3>
-                  <textarea class="form-control" rows="4" name="description" id="description"></textarea>
-                  <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>
+                  <textarea class="form-control" rows="4" name="description" id="description"></textarea>                  
+                  <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>                  
                   <input type="file" id="upload_image" name="upload_image">
+                  <input class="form-control" type="text" name="tags" data-role="tagsinput" placeholder="tags" id="tags">
                 </div>
                 <button type="submit" class="btn btn-success" >Post!</button>
               </form>
@@ -90,6 +92,7 @@
         <script src="https://bootswatch.com/_vendor/popper.js/dist/umd/popper.min.js"></script>
         <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="https://bootswatch.com/_assets/js/custom.js"></script>
+        <script type="text/javascript" src="{{asset('js/tagsinput.js')}}"></script>
         <script type="text/javascript">
 
         const momentsElement = document.querySelector('.moments');        
@@ -97,7 +100,7 @@
         const loadingElement = document.querySelector('.loading');  
         const deleteButton = document.querySelector('#deletePost');              
         const API_URL = 'http://localhost:8000/api/posts';        
-  
+
         listAllMoments();
 
         function listAllMoments(){
@@ -118,6 +121,9 @@
                 const image = document.createElement('img'); 
                 const imagePath = window.location.origin + '/storage/' + moment.image;
                 const deleteButton = document.createElement('a');
+                const user_id = "{{Auth::guard('users')->id()}}";
+                const username = moment.id;
+                console.log(username);
 
                 card.setAttribute('class', 'card mb-3');
                 image.setAttribute('class', 'rounded');
@@ -149,8 +155,11 @@
                 }           
                 
                 //CARD FOOTER
-                cardFooter.textContent = moment.created_at;
-                cardFooter.appendChild(deleteButton);
+                
+                cardFooter.innerHTML = ` <a href="#">${moment.username} </a>, dibuat pada ${moment.created_at.date}`;
+                if(moment.user_id == user_id){
+                  cardFooter.appendChild(deleteButton);
+                }
                 
                 cardBody1.appendChild(desc);
                 cardBody2.appendChild(span);                
@@ -172,7 +181,8 @@
           event.preventDefault();                 
           var description = $('#description').val();          
           let data = new FormData(this);          
-          data.append('description', description);
+          var user_id = "{{Auth::guard('users')->id()}}"
+          data.append('user_id', user_id);
           loadingElement.style.display = 'block';
           $.ajax({
             url : API_URL,
