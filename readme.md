@@ -6,5 +6,5 @@
     - [ ] Edit
     - [x] Add
     - [x] Delete
-- [ ] Tags system
+- [x] Tags system
 - [ ] Relationship

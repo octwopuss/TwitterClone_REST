@@ -9,6 +9,7 @@ use File;
 use Auth;
 use Validator;
 use App\Post;
+use App\Tags;
 
 class PostController extends Controller
 {
@@ -32,8 +33,7 @@ class PostController extends Controller
     return response()->json($data);
    }
 
-   public function store(Request $request){
-
+   public function store(Request $request){   	   	
    	$validation = $request->validate([
    		'upload_image' => 'max:2048',
    	]);   	
@@ -49,10 +49,26 @@ class PostController extends Controller
    	$post->description = $request->description;
    	$post->save();
 
+   	$tagsList = explode(",", $request->tags);
+   	foreach($tagsList as $tag){
+   		if(Tags::where('tags', $tag)->exists()){
+   			$popularity = Tags::where('tags', $tag)->first();
+   			Tags::where('tags', $tag)->update([
+   				'popularity' => $popularity->popularity + 1,
+   			]);
+   		}else{
+   			$dataPost = Post::findOrFail($post->id);
+   			$dataPost->tags()->create([
+   				'tags' => $tag,
+   			]);
+   		}
+   	}   	
+
    	$data = [   		
    		'id' => $request->user_id,
    		'description' => $request->description,
-   		'image' => $request->upload_image
+   		'image' => $request->upload_image,
+   		'tags' => $request->tags,
    	];
 
    	$response = [

@@ -122,8 +122,7 @@
                 const imagePath = window.location.origin + '/storage/' + moment.image;
                 const deleteButton = document.createElement('a');
                 const user_id = "{{Auth::guard('users')->id()}}";
-                const username = moment.id;
-                console.log(username);
+                const username = moment.id;                
 
                 card.setAttribute('class', 'card mb-3');
                 image.setAttribute('class', 'rounded');
@@ -150,9 +149,7 @@
                 deleteButton.href = window.location.origin + '/api/posts/delete/' + moment.id;                                       
                 deleteButton.textContent = 'Delete';
                 deleteButton.style.float = 'right';   
-                deleteButton.onclick = function(){
-                  listAllMoments();
-                }           
+                deleteButton.onclick = () => listAllMoments();          
                 
                 //CARD FOOTER
                 
@@ -181,8 +178,10 @@
           event.preventDefault();                 
           var description = $('#description').val();          
           let data = new FormData(this);          
-          var user_id = "{{Auth::guard('users')->id()}}"
-          data.append('user_id', user_id);
+          var user_id = "{{Auth::guard('users')->id()}}";
+          var tags = $('#tags').val();
+          data.append('tags', tags);
+          data.append('user_id', user_id);        
           loadingElement.style.display = 'block';
           $.ajax({
             url : API_URL,
