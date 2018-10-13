@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use File;
+use Auth;
 use Validator;
 use App\Post;
 
@@ -14,8 +15,21 @@ class PostController extends Controller
 
    public function posts(Post $post){   	
     $posts = $post->all();
+    $data = array();
 
-    return response()->json($posts);
+    foreach($posts as $post){
+    	$username = Post::find($post->id)->user->name;
+    	$data[] = [
+    		'id' => $post->id,
+    		'user_id' => $post->user_id,
+    		'username' => $username,
+    		'description' => $post->description,
+    		'image' => $post->image,
+    		'created_at' => $post->created_at,
+    	];
+    }
+
+    return response()->json($data);
    }
 
    public function store(Request $request){
@@ -31,11 +45,12 @@ class PostController extends Controller
 
         $post->image = $fileName;
 	}   	
-	
+	$post->user_id = $request->user_id;
    	$post->description = $request->description;
    	$post->save();
 
    	$data = [   		
+   		'id' => $request->user_id,
    		'description' => $request->description,
    		'image' => $request->upload_image
    	];
