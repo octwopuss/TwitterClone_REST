@@ -69,7 +69,7 @@
 			<div class="main-div">
     			<div class="panel">
    					<h2>Bagi Momen <i class="fa fa-heart fa-xs"></i></h2>
-   					<p>Sosial - sosial media-an</p>
+   					<p>Sosial sosial media-an</p>
    				</div>
     			<form id="Login" action="{{route('auth.user')}}"" method="POST">
     				{{ csrf_field() }}
