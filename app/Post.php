@@ -12,4 +12,8 @@ class Post extends Model
         'image',
         'tags',
     ];
+
+    public function user(){
+    	return $this->belongsTo('App\User', 'user_id');
+    }
 }
