@@ -7,3 +7,4 @@
     - [ ] Add
     - [x] Delete
 - [ ] Tags system
+- [ ] Relationship
