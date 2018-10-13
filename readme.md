@@ -4,7 +4,7 @@
     - [x] Browse
     - [x] Read
     - [ ] Edit
-    - [ ] Add
+    - [x] Add
     - [x] Delete
 - [ ] Tags system
 - [ ] Relationship
