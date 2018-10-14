@@ -146,10 +146,23 @@
                 //BREAD FOOTER
                 deleteButton.setAttribute('class', 'badge badge-danger');  
                 deleteButton.setAttribute('id', 'deletePost');   
-                deleteButton.href = window.location.origin + '/api/posts/delete/' + moment.id;                                       
+                                                       
                 deleteButton.textContent = 'Delete';
                 deleteButton.style.float = 'right';   
-                deleteButton.onclick = () => listAllMoments();          
+                deleteButton.href = '#';
+                deleteButton.onclick = () => {
+                  $.ajax({
+                    url : API_URL + '/' + moment.id,
+                    method : 'DELETE',
+                    headers : {
+                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },                    
+                    success : function(){
+                      window.location.reload();
+
+                    },
+                  });                  
+                }
                 
                 //CARD FOOTER
                 

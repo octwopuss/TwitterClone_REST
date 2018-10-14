@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
+use DB;
 use File;
 use Auth;
 use Validator;
@@ -20,6 +21,7 @@ class PostController extends Controller
 
     foreach($posts as $post){
     	$username = Post::find($post->id)->user->name;
+    	$tags = 
     	$data[] = [
     		'id' => $post->id,
     		'user_id' => $post->user_id,
@@ -81,6 +83,11 @@ class PostController extends Controller
 
 	public function delete($id){
 		$post = Post::find($id);
+		$post_tags = DB::table('post_tags')->where('post_id', $id)->get();
+		foreach($post_tags as $tag){
+			DB::table('tags')->where('id', $tag->tags_id)->delete();
+		}	
+		$post_tags = DB::table('post_tags')->where('post_id', $id)->delete();				
 		File::delete('storage/'.$post->image);
 		$post->delete();
 
