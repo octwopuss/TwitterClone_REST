@@ -8,3 +8,6 @@
     - [x] Delete
 - [x] Tags system
 - [ ] Relationship
+- [ ] User Profile Page, including friend
+- [ ] Friend list
+- [ ] Search Friends
