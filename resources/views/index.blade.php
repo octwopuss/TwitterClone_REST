@@ -71,18 +71,8 @@
               <br><br>
              <div class="container-fluid">
                <h2>Momen terpopuler</h2>
-               <span class="badge badge-primary">Cat</span>   
-               <span class="badge badge-primary">Dog</span>          
-               <span class="badge badge-primary">Tiger</span>
-               <span class="badge badge-primary">Cat</span>   
-               <span class="badge badge-primary">Dog</span>          
-               <span class="badge badge-primary">Tiger</span>
-               <span class="badge badge-primary">Cat</span>   
-               <span class="badge badge-primary">Dog</span>          
-               <span class="badge badge-primary">Tiger</span>
-               <span class="badge badge-primary">Cat</span>   
-               <span class="badge badge-primary">Dog</span>          
-               <span class="badge badge-primary">Tiger</span>
+               <div class="popularTags">                 
+               </div>               
              </div>
             </div>
           </div>
@@ -96,19 +86,35 @@
         <script type="text/javascript">
 
         const momentsElement = document.querySelector('.moments');        
+        const popularElement = document.querySelector('.popularTags');
         const form = document.querySelector('form');
         const loadingElement = document.querySelector('.loading');  
         const deleteButton = document.querySelector('#deletePost');              
         const API_URL = 'http://localhost:8000/api/posts';        
+        const TAGS_API_URL = 'http://localhost:8000/api/popularTags'
 
+        popularMoments();
         listAllMoments();
+
+        function popularMoments(){
+          fetch(TAGS_API_URL)
+            .then((response)=>response.json())
+            .then((tags)=>{
+              console.log(tags);
+              tags.forEach((tag)=>{
+                const tags = document.createElement('span');                
+                tags.innerHTML = `<span class="badge badge-primary">${tag}</span>` + ` `;
+                popularElement.appendChild(tags);
+              }); 
+            });
+        }
 
         function listAllMoments(){
           momentsElement.innerHTML = '';                
           fetch(API_URL, {method: 'GET'})
             .then((response)=> response.json())
             .then((moments)=> { 
-              console.log(moments);console.log(moments);
+              console.log(moments);
               moments.reverse();
               moments.forEach(moment => {                          
                 const card = document.createElement('div');                
@@ -139,9 +145,10 @@
                 desc.textContent = moment.description;                                
 
                 //TAGS
-                span.textContent= "tags: ";
-                tags.textContent = moment.tags;
-                tags.href = "#";
+                span.textContent= "tags: ";                
+
+                tags.innerHTML = `${moment.tags.map((item, i)=> 
+                  `<a href="#" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
 
                 //BREAD FOOTER
                 deleteButton.setAttribute('class', 'badge badge-danger');  

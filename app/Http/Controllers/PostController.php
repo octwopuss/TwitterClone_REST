@@ -17,17 +17,22 @@ class PostController extends Controller
 
    public function posts(Post $post){   	
     $posts = $post->all();
-    $data = array();
-
+    $data = array();    
+    $tagsData = array();
     foreach($posts as $post){
-    	$username = Post::find($post->id)->user->name;
-    	$tags = 
+    	$username = Post::find($post->id)->user->name;    	
+    	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
+    	foreach($post_tags as $tag){
+    		$tags = Tags::find($tag->tags_id);
+    		$tagsData[] = $tags->tags;
+    	}
     	$data[] = [
     		'id' => $post->id,
     		'user_id' => $post->user_id,
     		'username' => $username,
     		'description' => $post->description,
     		'image' => $post->image,
+    		'tags' => $tagsData,
     		'created_at' => $post->created_at,
     	];
     }
@@ -80,6 +85,17 @@ class PostController extends Controller
 
    	return response()->json($response, 201);
 	} 	
+
+	public function popularTags(){
+		$tags = DB::table('tags')->orderBy('popularity', 'desc')->take(5)->get();
+		$popularTags = array();		
+		foreach($tags as $tag){
+			$popularTags[] = $tag->tags;
+		}		
+
+		return response()->json($popularTags, 200);
+	}
+
 
 	public function delete($id){
 		$post = Post::find($id);
