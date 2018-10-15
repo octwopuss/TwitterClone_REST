@@ -34,10 +34,7 @@
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
               <ul class="navbar-nav ml-auto">
                   <li class="nav-item">
-                      <a class="nav-link" href="{{ route('logout') }}"><span class="fa fa-power-off"></span> Logout</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" href="{{ route('dashboard') }}"> <span class="fa fa-user"></span>  {{ Auth::guard('users')->user()->name }} </a>
+                      <a class="nav-link" href="#"> <span class="fa fa-user"></span>  {{ Auth::guard('users')->user()->name }} </a>
                   </li>
                   <li class="nav-item">
                       <a class="nav-link" href="{{ route('logout') }}"><span class="fa fa-power-off"></span> Logout</a>

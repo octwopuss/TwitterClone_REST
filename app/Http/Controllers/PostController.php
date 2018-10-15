@@ -25,7 +25,10 @@ class PostController extends Controller
     	foreach($post_tags as $tag){
     		$tags = Tags::find($tag->tags_id);
     		$tagsData[] = $tags->tags;
-    	}
+		}
+
+		$date = date('d/m/Y h:i:s', strtotime($post->created_at));
+		
     	$data[] = [
     		'id' => $post->id,
     		'user_id' => $post->user_id,
@@ -33,7 +36,7 @@ class PostController extends Controller
     		'description' => $post->description,
     		'image' => $post->image,
     		'tags' => $tagsData,
-    		'created_at' => $post->created_at,
+    		'created_at' => $date,
     	];
     }
 
