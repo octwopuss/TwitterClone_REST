@@ -16,10 +16,11 @@ Route::GET('/', 'UserController@index')->name('dashboard');
 Route::GET('/login', 'UserController@login')->name('login');
 Route::POST('/Auth', 'UserController@AuthenticateUser')->name('auth.user');
 Route::GET('/logout', 'UserController@logout')->name('logout');
+Route::get('/user/{username}', 'UserController@showFriend')->name('showFriend');
 
 Route::get('/check', function(){
-    $a = 3;
-    $b = 2;
+    $a = 220;
+    $b = 100;
     if($a > $b){
         $temp = $a;
         $a = $b;

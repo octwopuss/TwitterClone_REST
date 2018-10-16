@@ -11,6 +11,7 @@ use Auth;
 use Validator;
 use App\Post;
 use App\Tags;
+use App\Relationship;
 
 class PostController extends Controller
 {
@@ -116,5 +117,28 @@ class PostController extends Controller
 		];
 
 		return response()->json($response, 204);
+	}
+
+	public function createFriendship(Request $request){
+		Relationship::create([
+			"user_id_one" => $request->user_id_one,
+			"user_id_two" => $request->user_id_two,
+			"status" => $request->status,
+			"action_user_id" => $request->user_action,
+		]);
+
+		$data = [
+			"user_id_one" => $request->user_id_one,
+			"user_id_two" => $request->user_id_two,
+			"status" => $request->status,
+			"user_action" => $request->user_action,
+		];
+
+		$response = [
+			'message' => 'Friend Added!, waiting for respond',
+			'data' => $data,
+		];
+
+		return response()->json($response, 200);
 	}
 }

@@ -52,4 +52,9 @@ class UserController extends Controller
     	Auth::guard('users')->logout();
         return redirect('/');
     }
+
+    public function showFriend($username){
+        $user_id = User::where('name', $username)->first()->id;
+        return view('profile', compact('user_id'));
+    }
 }
