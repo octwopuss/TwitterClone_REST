@@ -7,7 +7,7 @@
     - [x] Add
     - [x] Delete
 - [x] Tags system
-- [ ] Relationship
+- [x] Relationship (perlu blade template, fitur untuk decline)
 - [ ] User Profile Page, including friend
 - [ ] Friend list
 - [ ] Search Friends
