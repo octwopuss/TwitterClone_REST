@@ -13,20 +13,4 @@
                   </li>
               </ul>
           </div>     
-        </nav>
-        <div class="container-fluid">
-          <div class="row">
-            <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
-              <form id="upload_form" action="post" enctype="multipart/form-data">
-                <meta name="csrf-token" content="{{ csrf_token() }}" />
-                <br>
-                <div class="form-group">                  
-                  <h3>Description</h3>
-                  <textarea class="form-control" rows="4" name="description" id="description"></textarea>                  
-                  <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>                  
-                  <input type="file" id="upload_image" name="upload_image">
-                  <input class="form-control" type="text" name="tags" data-role="tagsinput" placeholder="tags" id="tags">
-                </div>
-                <button type="submit" class="btn btn-success" >Post!</button>
-              </form>
-            </nav>     
+        </nav>            

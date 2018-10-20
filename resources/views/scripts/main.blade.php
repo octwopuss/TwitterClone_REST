@@ -1,7 +1,7 @@
 <script type="text/javascript">
 
 const momentsElement = document.querySelector('.moments');        
-const popularElement = document.querySelector('.popularTags');
+const popularTagsElement = document.querySelector('.popularTags');
 const form = document.querySelector('form');
 const loadingElement = document.querySelector('.loading');  
 const deleteButton = document.querySelector('#deletePost');              
@@ -18,7 +18,7 @@ function popularMoments(){
       tags.forEach((tag)=>{
         const tags = document.createElement('span');                
         tags.innerHTML = `<span class="badge badge-primary">${tag}</span>` + ` `;
-        popularElement.appendChild(tags);
+        popularTagsElement.appendChild(tags);
       }); 
     });
 }
@@ -80,8 +80,10 @@ function listAllMoments(){
             headers : {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },                    
-            success : function(){              
-              listAllMoments();                            
+            success : function(){    
+              popularTagsElement.innerHTML = '';
+              listAllMoments();                 
+              popularMoments();           
             },
           });                  
         }
@@ -129,7 +131,7 @@ form.addEventListener('submit', function(event){
     enctype: 'multipart/form-data',            
     success : function(){
       listAllMoments();
-      popularTags.innerHTML = '';      
+      popularTagsElement.innerHTML = '';      
       popularMoments();    
     },
     contentType : false, // prevents ajax sending the content type header.The content type header make Laravel 
@@ -137,6 +139,7 @@ form.addEventListener('submit', function(event){
     cache : false,
     processData : false,
   });
+  form.reset();
 });
 
 </script>
