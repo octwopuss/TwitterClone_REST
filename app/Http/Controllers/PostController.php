@@ -12,16 +12,19 @@ use Validator;
 use App\Post;
 use App\Tags;
 use App\Relationship;
+use App\User;
 
 class PostController extends Controller
 {
 
+	//RETURN ALL POSTS	
    public function posts(Post $post){   	   	
     $posts = $post->all();
     $data = array();    
     $tagsData = array();
     foreach($posts as $post){
-    	$username = Post::find($post->id)->user->name;    	
+    	$name = Post::find($post->id)->user->name; 
+    	$username = Post::find($post->id)->user->username;
     	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
     	$tagsData = [];
     	foreach($post_tags as $tag){
@@ -33,6 +36,7 @@ class PostController extends Controller
 		$data[] = [
     		'id' => $post->id,
     		'user_id' => $post->user_id,
+    		'name' => $name,
     		'username' => $username,
     		'description' => $post->description,
     		'image' => $post->image,
@@ -43,6 +47,7 @@ class PostController extends Controller
     return response()->json($data);
    }
 
+   //ADD NEW POST
    public function store(Request $request){   	      
    	$validation = $request->validate([
    		'upload_image' => 'max:2048',
@@ -89,6 +94,7 @@ class PostController extends Controller
    	return response()->json($response, 201);
 	} 	
 
+	//RETURN SOME POPULAR TAGS
 	public function popularTags(){
 		$tags = DB::table('tags')->orderBy('popularity', 'desc')->take(5)->get();
 		$popularTags = array();		
@@ -99,7 +105,7 @@ class PostController extends Controller
 		return response()->json($popularTags, 200);
 	}
 
-
+	//DELETE A POST
 	public function delete($id){
 		$post = Post::find($id);
 		$post_tags = DB::table('post_tags')->where('post_id', $id)->get();
@@ -118,12 +124,13 @@ class PostController extends Controller
 		return response()->json($response, 204);
 	}
 
-	public function createFriendship(Request $request){
+	//ADD FRIEND
+	public function createFriendship(Request $request){						
 		Relationship::create([
 			"user_id_one" => $request->user_id_one,
 			"user_id_two" => $request->user_id_two,
 			"status" => $request->status,
-			"action_user_id" => $request->user_action,
+			"action_user_id" => $request->action_user_id
 		]);
 
 		$data = [
@@ -139,5 +146,51 @@ class PostController extends Controller
 		];
 
 		return response()->json($response, 200);
+	}
+
+	//CANCEL FRIEND REQUEST 
+	public function cancelFriendRequest(Request $request){
+		Relationship::where('user_id_one', $request->user_id_one)
+					->where('user_id_two', $request->user_id_two)
+					->where('status', 0)
+					->delete();
+
+		$response = [
+			'message' => 'Friend request cancled',					
+		];
+
+		return response()->json($response, 204);
+	}
+
+	//SHOW FRIEND POST
+	public function showFriendPost($username){
+		$getId = User::where('username', $username)->first()->id;
+		$posts = Post::where('user_id', $getId)->get();
+
+		$tagsData = array();
+	    foreach($posts as $post){
+	    	$name = Post::find($post->id)->user->name; 
+	    	$username = Post::find($post->id)->user->username;
+	    	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
+	    	$tagsData = [];
+	    	foreach($post_tags as $tag){
+	    		$tags = Tags::find($tag->tags_id);
+	    		$tagsData[] = $tags->tags;
+			}
+
+			$date = date('d/m/Y h:i:s', strtotime($post->created_at));		    
+			$data[] = [
+	    		'id' => $post->id,
+	    		'user_id' => $post->user_id,
+	    		'name' => $name,
+	    		'username' => $username,
+	    		'description' => $post->description,
+	    		'image' => $post->image,
+	    		'tags' => $tagsData,
+	    		'created_at' => $date,
+	    	];
+	    }       
+		
+		return response()->json($data, 200);
 	}
 }

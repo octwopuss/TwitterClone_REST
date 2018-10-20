@@ -1,0 +1,23 @@
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.profile img{
+    width: 100px;
+    height: 100px;
+}
+
+.box{
+    display: inline-grid;
+}
+
+.follow-box:hover{
+    cursor: pointer;
+}
+
+.follow-text{
+    color: black;
+}

@@ -1,3 +1,43 @@
+@extends('index')
+
+@section('importantPart')
+<div class="row">
+  <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
+    <form id="upload_form" action="post" enctype="multipart/form-data">
+      <meta name="csrf-token" content="{{ csrf_token() }}" />
+      <br>
+      <div class="form-group">                  
+        <h3>Description</h3>
+        <textarea class="form-control" rows="4" name="description" id="description"></textarea>                  
+        <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>                  
+        <input type="file" id="upload_image" name="upload_image">
+        <input class="form-control" type="text" name="tags" data-role="tagsinput" placeholder="tags" id="tags">
+      </div>
+      <button type="submit" class="btn btn-success" >Post!</button>
+    </form>
+  </nav> 
+  <div class="col-md-5">
+    <br><br>              
+    <div class="loading">
+      <center> <img src="{{asset('/img/loading2.gif')}}" style="width: 100px; height: 100px;"></center>                
+    </div>
+    <div class="moments">
+                                
+    </div>
+  </div>              
+  <div class="col-md-3">
+    <br><br>
+   <div class="container-fluid">
+     <h2>Momen terpopuler</h2>
+     <div class="popularTags">                 
+     </div>               
+   </div>
+  </div>
+</div>
+@endsection
+
+@section('mainjs')
+
 <script type="text/javascript">
 
 const momentsElement = document.querySelector('.moments');        
@@ -6,7 +46,7 @@ const form = document.querySelector('form');
 const loadingElement = document.querySelector('.loading');  
 const deleteButton = document.querySelector('#deletePost');              
 const API_URL = 'http://localhost:8000/api/posts';        
-const TAGS_API_URL = 'http://localhost:8000/api/popularTags'
+const TAGS_API_URL = 'http://localhost:8000/api/popularTags';
 
 popularMoments();
 listAllMoments();
@@ -89,8 +129,8 @@ function listAllMoments(){
         }
         
         //CARD FOOTER
-        
-        cardFooter.innerHTML = ` <a href="/user/${moment.username}">${moment.username} </a>, dibuat pada ${moment.created_at}`;
+        // const user = moment.username.replace(/ +/g,'');
+        cardFooter.innerHTML = ` <a href="/user/${moment.username}">${moment.name} </a>, dibuat pada ${moment.created_at}`;
         if(moment.user_id == user_id){
           cardFooter.appendChild(deleteButton);
         }
@@ -143,3 +183,6 @@ form.addEventListener('submit', function(event){
 });
 
 </script>
+
+
+@endsection

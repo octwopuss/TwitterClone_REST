@@ -11,35 +11,35 @@ class UserController extends Controller
 {
     public function index(){
     	if(Auth::guard('users')->check()){
-    		return view('index');
+    		return view('scripts.main');
     	}        
     	return redirect()->route('login');
     }
 
     public function AuthenticateUser(Request $request){
     	$this->validate($request, [            
-            'email' => 'required',
+            'username' => 'required',
             'password' => 'required'
         ]);
 
-        $email = $request->input('email');
+        $username = $request->input('username');
         $password = $request->input('password');
         $remember = $request->input('remember');
         $credentials = [
-        'email' => $email, 
+        'username' => $username, 
         'password' => $password,
         ];        
 
 
-        if(!User::whereemail($email)->count()){
-            return back()->with('error', 'Email not registered');
+        if(!User::whereusername($username)->count()){
+            return back()->with('error', 'username tidak terdaftar');
         }
         if (Auth::guard('users')->attempt($credentials, $remember)){        	
             return redirect()->route('dashboard');
         }else{
             return back()->with([
                 'error' => 'Password Salah',
-                'email' => $email,
+                'username' => $username,
             ]);
         }
     }
@@ -53,8 +53,8 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function showFriend($username){
-        $user_id = User::where('name', $username)->first()->id;
-        return view('profile', compact('user_id'));
+    public function showFriend($username){    
+        $user = User::where('username', $username)->first();
+        return view('scripts.profile', compact('user'));
     }
 }

@@ -73,8 +73,14 @@
    				</div>
     			<form id="Login" action="{{route('auth.user')}}"" method="POST">
     				{{ csrf_field() }}
+    				@if(Session::has('error'))
+    				<div class="alert alert-dismissible alert-warning">
+					  <button type="button" class="close" data-dismiss="alert">&times;</button>
+					  {{Session::get('error')}}
+					</div>		
+					@endif
 					<div class="form-group">
-           				<input type="email" class="form-control" id="inputEmail" placeholder="Email Address" name="email">
+           				<input type="text" class="form-control" id="inputEmail" placeholder="Username" name="username" value="@if(Session::has('username')) {{Session::get('username')}} @endif">
 					</div>
         			<div class="form-group">	
             			<input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">

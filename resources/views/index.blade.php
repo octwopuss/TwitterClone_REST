@@ -11,8 +11,22 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
         <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{{asset('css/tagsinput.css')}}">
+        @yield('style')
         <style>
+        body{
+          font-family: 'Roboto', sans-serif;
+          background: #191b22;          
+        }
+        h1,h2,h3,h4,h5,h6,p, span, div {
+          color: white;
+        }
+
+        .card {
+          background: #282c37;
+        }
+
         #upload_image {
           opacity: 0;
           position: absolute;
@@ -30,46 +44,15 @@
           @include('layouts.nav')           
             <!-- END NAVBAR  -->
           <div class="container-fluid">
-          <div class="row">
-            <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
-              <form id="upload_form" action="post" enctype="multipart/form-data">
-                <meta name="csrf-token" content="{{ csrf_token() }}" />
-                <br>
-                <div class="form-group">                  
-                  <h3>Description</h3>
-                  <textarea class="form-control" rows="4" name="description" id="description"></textarea>                  
-                  <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>                  
-                  <input type="file" id="upload_image" name="upload_image">
-                  <input class="form-control" type="text" name="tags" data-role="tagsinput" placeholder="tags" id="tags">
-                </div>
-                <button type="submit" class="btn btn-success" >Post!</button>
-              </form>
-            </nav> 
-            <div class="col-md-5">
-              <br><br>              
-              <div class="loading">
-                <center> <img src="{{asset('/img/loading2.gif')}}" style="width: 100px; height: 100px;"></center>                
-              </div>
-              <div class="moments">
-                                          
-              </div>
-            </div>              
-            <div class="col-md-3">
-              <br><br>
-             <div class="container-fluid">
-               <h2>Momen terpopuler</h2>
-               <div class="popularTags">                 
-               </div>               
-             </div>
-            </div>
+          @yield('importantPart')          
+          
           </div>
-        </div>
 
         <script src="https://bootswatch.com/_vendor/jquery/dist/jquery.min.js"></script>
         <script src="https://bootswatch.com/_vendor/popper.js/dist/umd/popper.min.js"></script>
         <script src="https://bootswatch.com/_vendor/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="https://bootswatch.com/_assets/js/custom.js"></script>
         <script type="text/javascript" src="{{asset('js/tagsinput.js')}}"></script>
-        @include('scripts.main')
+        @yield('mainjs')        
     </body>
 </html>
