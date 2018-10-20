@@ -16,21 +16,21 @@ use App\Relationship;
 class PostController extends Controller
 {
 
-   public function posts(Post $post){   	
+   public function posts(Post $post){   	   	
     $posts = $post->all();
     $data = array();    
     $tagsData = array();
     foreach($posts as $post){
     	$username = Post::find($post->id)->user->name;    	
     	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
+    	$tagsData = [];
     	foreach($post_tags as $tag){
     		$tags = Tags::find($tag->tags_id);
     		$tagsData[] = $tags->tags;
 		}
 
-		$date = date('d/m/Y h:i:s', strtotime($post->created_at));
-		
-    	$data[] = [
+		$date = date('d/m/Y h:i:s', strtotime($post->created_at));		    
+		$data[] = [
     		'id' => $post->id,
     		'user_id' => $post->user_id,
     		'username' => $username,
@@ -39,12 +39,11 @@ class PostController extends Controller
     		'tags' => $tagsData,
     		'created_at' => $date,
     	];
-    }
-
+    }       
     return response()->json($data);
    }
 
-   public function store(Request $request){   	   	
+   public function store(Request $request){   	      
    	$validation = $request->validate([
    		'upload_image' => 'max:2048',
    	]);   	
@@ -60,7 +59,7 @@ class PostController extends Controller
    	$post->description = $request->description;
    	$post->save();
 
-   	$tagsList = explode(",", $request->tags);
+   	$tagsList = explode(",", $request->tags);   	
    	foreach($tagsList as $tag){
    		if(Tags::where('tags', $tag)->exists()){
    			$popularity = Tags::where('tags', $tag)->first();
