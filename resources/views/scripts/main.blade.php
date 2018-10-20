@@ -1,3 +1,5 @@
+<script type="text/javascript">
+
 const momentsElement = document.querySelector('.moments');        
 const popularElement = document.querySelector('.popularTags');
 const form = document.querySelector('form');
@@ -51,16 +53,18 @@ function listAllMoments(){
         cardBody1.setAttribute('class', 'card-body');
         cardBody2.setAttribute('class', 'card-body');
         tags.setAttribute('class', 'card-link');
-        cardFooter.setAttribute('class', 'card-footer text-muted');                
+        cardFooter.setAttribute('class', 'card-footer text-muted');                        
 
         //DESCRIPTION 
         desc.textContent = moment.description;                                
 
         //TAGS
+        if(moment.tags.length >= 1){
         span.textContent= "tags: ";                
 
         tags.innerHTML = `${moment.tags.map((item, i)=> 
           `<a href="#" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
+        }
 
         //BREAD FOOTER
         deleteButton.setAttribute('class', 'badge badge-danger');  
@@ -76,9 +80,8 @@ function listAllMoments(){
             headers : {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },                    
-            success : function(){
-              window.location.reload();
-
+            success : function(){              
+              listAllMoments();                            
             },
           });                  
         }
@@ -111,9 +114,10 @@ form.addEventListener('submit', function(event){
   var description = $('#description').val();          
   let data = new FormData(this);          
   var user_id = "{{Auth::guard('users')->id()}}";
-  var tags = $('#tags').val();
+  var tags = $('#tags').val();  
   data.append('tags', tags);
   data.append('user_id', user_id);        
+  console.log(data.tags);
   loadingElement.style.display = 'block';
   $.ajax({
     url : API_URL,
@@ -124,8 +128,9 @@ form.addEventListener('submit', function(event){
     data : data,
     enctype: 'multipart/form-data',            
     success : function(){
-      momentsElement.innerHTML = ''; 
-      location.reload();
+      listAllMoments();
+      popularTags.innerHTML = '';      
+      popularMoments();    
     },
     contentType : false, // prevents ajax sending the content type header.The content type header make Laravel 
                         // handel the FormData Object as some serialized string.                
@@ -133,3 +138,5 @@ form.addEventListener('submit', function(event){
     processData : false,
   });
 });
+
+</script>
