@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 
-Route::GET('/posts', 'PostController@posts')->name('moment.Show');
+Route::GET('/posts/{userId}', 'PostController@posts')->name('moment.Show');
 Route::POST('/posts', 'PostController@store')->name('moment.store');
 Route::GET('/popularTags', 'PostController@popularTags')->name('moment.popularTags');
 Route::DELETE('/posts/{id}', 'PostController@delete')->name('moment.delete');

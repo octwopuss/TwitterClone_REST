@@ -45,8 +45,9 @@ const popularTagsElement = document.querySelector('.popularTags');
 const form = document.querySelector('form');
 const loadingElement = document.querySelector('.loading');  
 const deleteButton = document.querySelector('#deletePost');              
-const API_URL = 'http://localhost:8000/api/posts';        
-const TAGS_API_URL = 'http://localhost:8000/api/popularTags';
+const API_URL = "{{route('moment.Show', Auth::guard('users')->user()->id)}}";        
+const TAGS_API_URL = "{{route('moment.popularTags')}}";
+const DELETE_POST = "http://localhost:8000/api/posts/";
 
 popularMoments();
 listAllMoments();
@@ -68,8 +69,8 @@ function listAllMoments(){
   fetch(API_URL, {method: 'GET'})
     .then((response)=> response.json())
     .then((moments)=> { 
-      console.log(moments);
-      moments.reverse();
+      console.log(moments);     
+      moments.reverse(); 
       moments.forEach(moment => {                          
         const card = document.createElement('div');                
         const cardBody1 = document.createElement('div');
@@ -115,7 +116,7 @@ function listAllMoments(){
         deleteButton.href = '#';
         deleteButton.onclick = () => {
           $.ajax({
-            url : API_URL + '/' + moment.id,
+            url : DELETE_POST+moment.id,
             method : 'DELETE',
             headers : {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -162,7 +163,7 @@ form.addEventListener('submit', function(event){
   console.log(data.tags);
   loadingElement.style.display = 'block';
   $.ajax({
-    url : API_URL,
+    url : '{{route("moment.store")}}',
     method : 'POST',
     headers : {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

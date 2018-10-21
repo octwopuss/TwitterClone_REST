@@ -11,9 +11,17 @@
 			  <div class="card-body">
 			    <h4 class="card-title" style="text-align: center;">Card title</h4>
 			    <img src="{{asset('img/pepe.png')}}" class="center rounded-circle">			    
-			    <span class="center">@hendroyohanes</span>				    		    	       	
-		    	<p class="center hitFollow follow-box badge badge-info"><span class="follow-text">FOLLOW</span></p>
-		    	<meta name="csrf-token" content="{{ csrf_token() }}" />
+			    <center>{{'@'.$user->username}}</center>
+			    @if($user->id != Auth::guard('users')->user()->id)	
+			    	@if($relationship == NULL)
+			    	<p class="center hitFollow follow-box badge badge-info"><span class="follow-text">FOLLOW</span></p>
+			    	@else
+			    	<p class="center hitFollow follow-box badge badge-light"><span class="follow-text">FOLLOWED</span></p>
+			    	@endif
+		    	@else
+		    	<br>
+		    	@endif
+		    	<meta name="csrf-token" content="{{ csrf_token() }}" />		    	
 			    <p class="card-text">Code for fun and for food!</p>
 			    <span class="card-link">Follows : 102</span>
 			    <span class="card-link">Follower : 211</span>
@@ -44,13 +52,12 @@
 			$(this).removeClass('badge-info').addClass('badge-light');
 			$('.follow-text').text('FOLLOWED');				
 			let targetId = "{{$user->id}}";
-			let me = "{{Auth::guard('users')->user()->id}}";
-			let users = switchId(targetId, me);
+			let me = "{{Auth::guard('users')->user()->id}}";			
 			var action = {
-				'user_id_one' : users[0],
-				'user_id_two' : users[1],
-				'status' : 0,
-				'action_user_id' : users[0]
+				'user_id_one' : me,
+				'user_id_two' : targetId,
+				'status' : 1,
+				'action_user_id' : "{{Auth::guard('users')->user()->id}}",
 			}
 
 			fetch(API_ADD_FRIEND, {
@@ -69,11 +76,10 @@
 			$(this).removeClass('badge-light').addClass('badge-info');
 			$('.follow-text').text('FOLLOW');
 			let targetId = "{{$user->id}}";
-			let me = "{{Auth::guard('users')->user()->id}}";
-			let users = switchId(targetId, me);
+			let me = "{{Auth::guard('users')->user()->id}}";			
 			var action = {
-				'user_id_one' : users[0],
-				'user_id_two' : users[1],			
+				'user_id_one' : me,
+				'user_id_two' : targetId,			
 			}
 
 			fetch(API_CANCEL_FRIENDREQUEST, {
@@ -150,10 +156,34 @@
 	        tags.innerHTML = `${moment.tags.map((item, i)=> 
 	          `<a href="#" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
 	        }       
+
+	        deleteButton.setAttribute('class', 'badge badge-danger');  
+	        deleteButton.setAttribute('id', 'deletePost');   
+	                                               
+	        deleteButton.textContent = 'Delete';
+	        deleteButton.style.float = 'right';   
+	        deleteButton.href = '#';
+	        deleteButton.onclick = () => {
+	          $.ajax({
+	            url : API_URL + '/' + moment.id,
+	            method : 'DELETE',
+	            headers : {
+	              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	            },                    
+	            success : function(){    
+	              popularTagsElement.innerHTML = '';
+	              listAllMoments();                 
+	              popularMoments();           
+	            },
+	          });                  
+	        }
 	        
 	        //CARD FOOTER
 	        // const user = moment.username.replace(/ +/g,'');
-	        cardFooter.innerHTML = ` <a href="/user/${moment.username}">${moment.name} </a>, dibuat pada ${moment.created_at}`;        
+	        cardFooter.innerHTML = ` <a href="/user/${moment.username}">${moment.name} </a>, dibuat pada ${moment.created_at}`;
+	        if(moment.user_id == user_id){
+	          cardFooter.appendChild(deleteButton);
+	        }        
 	        cardBody1.appendChild(desc);
 	        cardBody2.appendChild(span);                
 	        cardBody2.appendChild(tags);                

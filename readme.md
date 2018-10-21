@@ -1,13 +1,13 @@
 ## TODO LIST 
 - [x] Authentication
-- [ ] BREAD
+- [x] BREAD
     - [x] Browse
-    - [x] Read
-    - [ ] Edit
+    - [x] Read    
     - [x] Add
     - [x] Delete
 - [x] Tags system
-- [x] Relationship (perlu blade template, fitur untuk decline)
-- [ ] User Profile Page, including friend
+- [x] Relationship 
+- [x] User Profile Page
 - [ ] Friend list
-- [ ] Search Friends
+- [ ] Friend Search
+- [ ] Search post by tags

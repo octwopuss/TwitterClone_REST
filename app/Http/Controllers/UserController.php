@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use App\User;
+use App\Relationship;
 
 class UserController extends Controller
 {
@@ -54,7 +55,15 @@ class UserController extends Controller
     }
 
     public function showFriend($username){    
+        $myId = Auth::guard('users')->user()->id;
+        $targetId = User::where('username', $username)->first()->id;
+        $swap = [$myId, $targetId];                
+        $relationship = Relationship::where('user_id_one', $swap[0])
+                                    ->where('user_id_two', $swap[1])
+                                    ->where('status', 1)
+                                    ->first();        
         $user = User::where('username', $username)->first();
-        return view('scripts.profile', compact('user'));
+        // dd($relationship);
+        return view('scripts.profile', compact('user', 'relationship'));
     }
 }

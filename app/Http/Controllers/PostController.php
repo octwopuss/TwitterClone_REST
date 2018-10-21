@@ -18,12 +18,41 @@ class PostController extends Controller
 {
 
 	//RETURN ALL POSTS	
-   public function posts(Post $post){   	   	
-    $posts = $post->all();
-    $data = array();    
-    $tagsData = array();
-    foreach($posts as $post){
-    	$name = Post::find($post->id)->user->name; 
+   public function posts(Post $post, $id){   	   	
+   	$relationship = Relationship::where('user_id_one', $id)   		   								
+   								->where('status', 1)
+   								->get();
+	$data = array();       					
+	foreach($relationship as $relation){				
+		$tagsData = array();							
+		$posts = Post::where('user_id', $relation->user_id_two)->get();			
+	    foreach($posts as $post){
+	    	$name = Post::find($post->id)->user->name; 
+	    	$username = Post::find($post->id)->user->username;
+	    	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
+	    	$tagsData = [];
+	    	foreach($post_tags as $tag){
+	    		$tags = Tags::find($tag->tags_id);
+	    		$tagsData[] = $tags->tags;
+			}
+
+			$date = date('d/m/Y h:i:s', strtotime($post->created_at));		    
+			$data[] = [
+	    		'id' => $post->id,
+	    		'user_id' => $post->user_id,
+	    		'name' => $name,
+	    		'username' => $username,
+	    		'description' => $post->description,
+	    		'image' => $post->image,
+	    		'tags' => $tagsData,
+	    		'created_at' => $date,
+	    	];
+	    }       
+	}	
+
+	$myPosts = Post::where('user_id', $id)->get();
+	foreach($myPosts as $post){
+		$name = Post::find($post->id)->user->name; 
     	$username = Post::find($post->id)->user->username;
     	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
     	$tagsData = [];
@@ -43,7 +72,8 @@ class PostController extends Controller
     		'tags' => $tagsData,
     		'created_at' => $date,
     	];
-    }       
+	}
+
     return response()->json($data);
    }
 
@@ -152,7 +182,7 @@ class PostController extends Controller
 	public function cancelFriendRequest(Request $request){
 		Relationship::where('user_id_one', $request->user_id_one)
 					->where('user_id_two', $request->user_id_two)
-					->where('status', 0)
+					->where('status', 1)
 					->delete();
 
 		$response = [
@@ -160,13 +190,13 @@ class PostController extends Controller
 		];
 
 		return response()->json($response, 204);
-	}
+	}	
 
 	//SHOW FRIEND POST
 	public function showFriendPost($username){
+		//CHECK IF FRIEND THEN FOLLOWED ELSE NOT FOLLOW
 		$getId = User::where('username', $username)->first()->id;
-		$posts = Post::where('user_id', $getId)->get();
-
+		$posts = Post::where('user_id', $getId)->get();		
 		$tagsData = array();
 	    foreach($posts as $post){
 	    	$name = Post::find($post->id)->user->name; 
@@ -187,7 +217,7 @@ class PostController extends Controller
 	    		'description' => $post->description,
 	    		'image' => $post->image,
 	    		'tags' => $tagsData,
-	    		'created_at' => $date,
+	    		'created_at' => $date,	    		
 	    	];
 	    }       
 		
