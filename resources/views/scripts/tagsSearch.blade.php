@@ -2,19 +2,7 @@
 
 @section('importantPart')
 <div class="row">
-  <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
-    <form id="upload_form" action="post" enctype="multipart/form-data">
-      <meta name="csrf-token" content="{{ csrf_token() }}" />
-      <br>
-      <div class="form-group">                  
-        <h3>Description</h3>
-        <textarea class="form-control" rows="4" name="description" id="description"></textarea>                  
-        <label for="upload_image" class="input-group-append btn btn-primary">upload image</label>                  
-        <input type="file" id="upload_image" name="upload_image">
-        <input class="form-control" type="text" name="tags" data-role="tagsinput" placeholder="tags" id="tags">
-      </div>
-      <button type="submit" class="btn btn-success" >Post!</button>
-    </form>
+  <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">   
   </nav> 
   <div class="col-md-5">
     <br><br>              
@@ -34,33 +22,32 @@
    </div>
   </div>
 </div>
+
 @endsection
 
 @section('mainjs')
-
 <script type="text/javascript">
 
 const momentsElement = document.querySelector('.moments');        
 const popularTagsElement = document.querySelector('.popularTags');
 const form = document.querySelector('form');
 const loadingElement = document.querySelector('.loading');  
-const deleteButton = document.querySelector('#deletePost');              
-const API_URL = "{{route('moment.Show', Auth::guard('users')->user()->id)}}";        
+const deleteButton = document.querySelector('#deletePost');
+const API_URL = "{{route('moment.byTag', $tag)}}";
 const TAGS_API_URL = "{{route('moment.popularTags')}}";
-const DELETE_POST = "http://localhost:8000/api/posts/";
-const TAGS_LINK = "http://localhost:8000/api/tags/";
-const TAGS_SEARCH = "{{route('postsByTags', 'data')}}";
+const TAGS_LINK = "{{route('postsByTags', 'data')}}";
 
-popularMoments();
 listAllMoments();
+popularMoments();
 
 function popularMoments(){
   fetch(TAGS_API_URL)
     .then((response)=>response.json())
     .then((tags)=>{
       tags.forEach((tag)=>{
-        const tags = document.createElement('span');                
-        tags.innerHTML = `<a href="${TAGS_SEARCH.replace('data', tag)}"><span class="badge badge-primary">${tag}</span></a>` + ` `;
+        const tags = document.createElement('span');        
+        //VERY CLEVER WAY TO ADD JAVASCRIPT VARIABLE INTO LARAVEL BLADE         
+        tags.innerHTML = `<a href="${TAGS_LINK.replace('data', tag)}"><span class="badge badge-primary">${tag}</span></a>` + ` `;
         popularTagsElement.appendChild(tags);
       }); 
     });
@@ -106,7 +93,7 @@ function listAllMoments(){
         span.textContent= "tags: ";                
 
         tags.innerHTML = `${moment.tags.map((item, i)=> 
-          `<a href="${TAGS_LINK + moment.tags[i]}" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
+          `<a href="#" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
         }
 
         //BREAD FOOTER
@@ -154,39 +141,6 @@ function listAllMoments(){
     });
   }        
 
-form.addEventListener('submit', function(event){
-  event.preventDefault();                 
-  var description = $('#description').val();          
-  let data = new FormData(this);          
-  var user_id = "{{Auth::guard('users')->id()}}";
-  var tags = $('#tags').val();  
-  data.append('tags', tags);
-  data.append('user_id', user_id);        
-  console.log(data.tags);
-  loadingElement.style.display = 'block';
-  $.ajax({
-    url : '{{route("moment.store")}}',
-    method : 'POST',
-    headers : {
-      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-    data : data,
-    enctype: 'multipart/form-data',            
-    success : function(){
-      listAllMoments();
-      popularTagsElement.innerHTML = '';      
-      popularMoments();    
-    },
-    contentType : false, // prevents ajax sending the content type header.The content type header make Laravel 
-                        // handel the FormData Object as some serialized string.                
-    cache : false,
-    processData : false,
-  });
-  $("#tags").tagsinput('removeAll');
-  form.reset();  
-});
 
 </script>
-
-
 @endsection

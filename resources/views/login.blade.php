@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<style type="text/css">
 			body{
-				background-color: #c3c9cc;
+				background-color: #191b22;
 			}		
 
 			.form-heading { color:#fff; font-size:23px;}
@@ -21,7 +21,7 @@
 			  line-height: 50px;
 			}
 			.main-div {
-			  background: #ffffff none repeat scroll 0 0;
+			  background: #ffff none repeat scroll 0 0;
 			  border-radius: 2px;
 			  margin: 10px auto 30px;
 			  max-width: 38%;

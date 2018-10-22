@@ -9,3 +9,4 @@ Route::DELETE('/posts/{id}', 'PostController@delete')->name('moment.delete');
 Route::POST('/friendship/create', 'PostController@createFriendship')->name('friend.create');
 Route::POST('/friendship/cancel','PostController@cancelFriendRequest')->name('friend.cancel');
 Route::GET('/user/{username}', 'PostController@showFriendPost')->name('friend.showPost');
+Route::GET('/tags/{tags}', 'PostController@postsByTag')->name('moment.byTag');

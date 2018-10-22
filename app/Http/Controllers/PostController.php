@@ -89,15 +89,20 @@ class PostController extends Controller
         $fileName = $request->file('upload_image')->store('moments_image', 'public');            
 
         $post->image = $fileName;
-	}   	
+	}   		
 	$post->user_id = $request->user_id;
    	$post->description = $request->description;
+   	// dd($request->tags);
    	$post->save();
 
-   	$tagsList = explode(",", $request->tags);   	
+   	$tagsList = explode(",", $request->tags);     	   
    	foreach($tagsList as $tag){
-   		if(Tags::where('tags', $tag)->exists()){
-   			$popularity = Tags::where('tags', $tag)->first();
+   		if(Tags::where('tags', $tag)->exists()){   			
+   			$popularity = Tags::where('tags', $tag)->first();   			
+   			$post_tags = DB::table('post_tags')->insert([
+   				"post_id" => $post->id,
+   				"tags_id" => $popularity->id,
+   			]);
    			Tags::where('tags', $tag)->update([
    				'popularity' => $popularity->popularity + 1,
    			]);
@@ -199,6 +204,35 @@ class PostController extends Controller
 		$posts = Post::where('user_id', $getId)->get();		
 		$tagsData = array();
 	    foreach($posts as $post){
+	    	$name = Post::find($post->id)->user->name; 
+	    	$username = Post::find($post->id)->user->username;
+	    	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
+	    	$tagsData = [];
+	    	foreach($post_tags as $tag){
+	    		$tags = Tags::find($tag->tags_id);
+	    		$tagsData[] = $tags->tags;
+			}
+
+			$date = date('d/m/Y h:i:s', strtotime($post->created_at));		    
+			$data[] = [
+	    		'id' => $post->id,
+	    		'user_id' => $post->user_id,
+	    		'name' => $name,
+	    		'username' => $username,
+	    		'description' => $post->description,
+	    		'image' => $post->image,
+	    		'tags' => $tagsData,
+	    		'created_at' => $date,	    		
+	    	];
+	    }       
+		
+		return response()->json($data, 200);
+	}
+
+	public function postsByTag($tag){
+		$tagId = Tags::where('tags', $tag)->first()->id;		
+		$posts = Tags::find($tagId)->post()->get();
+		 foreach($posts as $post){
 	    	$name = Post::find($post->id)->user->name; 
 	    	$username = Post::find($post->id)->user->username;
 	    	$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();

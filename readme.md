@@ -10,4 +10,5 @@
 - [x] User Profile Page
 - [ ] Friend list
 - [ ] Friend Search
-- [ ] Search post by tags
+- [x] Search post by tags
+- [ ] Edit User Profile Picture and Bio

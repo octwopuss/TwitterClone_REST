@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Auth;
 use App\User;
 use App\Relationship;
+use App\Tags;
 
 class UserController extends Controller
 {
@@ -65,5 +66,10 @@ class UserController extends Controller
         $user = User::where('username', $username)->first();
         // dd($relationship);
         return view('scripts.profile', compact('user', 'relationship'));
+    }
+
+    public function postsByTags($tags){
+        $tag = $tags;        
+        return view('scripts.tagsSearch', compact('tag'));
     }
 }
