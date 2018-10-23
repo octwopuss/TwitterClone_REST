@@ -72,4 +72,14 @@ class UserController extends Controller
         $tag = $tags;        
         return view('scripts.tagsSearch', compact('tag'));
     }
+
+    //FITUR UNTUK MENGGANTI BIOGRAFI DAN PROFILE PICTURE DARI USER
+    //TAMBAH JUGA FITUR UNTUK MENGHITUNG FOLLOWER DARI FOLLOWS DARI USER
+    //BUAT BLADE TEMPLATE UNTUK MENGGANTI PROFILE USER
+    //APAKAH DATA HARUS DITAMPILKAN DENGAN RESTFUL WAY???
+    public function bio(){
+        
+
+        return view('bio');
+    }
 }

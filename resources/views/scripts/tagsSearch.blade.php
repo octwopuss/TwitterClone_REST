@@ -93,7 +93,7 @@ function listAllMoments(){
         span.textContent= "tags: ";                
 
         tags.innerHTML = `${moment.tags.map((item, i)=> 
-          `<a href="#" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
+          `<a href="${TAGS_LINK.replace('data', moment.tags[i])}" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
         }
 
         //BREAD FOOTER
