@@ -47,8 +47,7 @@ const loadingElement = document.querySelector('.loading');
 const deleteButton = document.querySelector('#deletePost');              
 const API_URL = "{{route('moment.Show', Auth::guard('users')->user()->id)}}";        
 const TAGS_API_URL = "{{route('moment.popularTags')}}";
-const DELETE_POST = "http://localhost:8000/api/posts/";
-const TAGS_LINK = "http://localhost:8000/api/tags/";
+const DELETE_POST = "{{route('moment.delete', 'id')}}";
 const TAGS_SEARCH = "{{route('postsByTags', 'data')}}";
 
 popularMoments();
@@ -106,7 +105,7 @@ function listAllMoments(){
         span.textContent= "tags: ";                
 
         tags.innerHTML = `${moment.tags.map((item, i)=> 
-          `<a href="${TAGS_LINK + moment.tags[i]}" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
+          `<a href="${TAGS_SEARCH.replace('data', moment.tags[i])}" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
         }
 
         //BREAD FOOTER
@@ -118,7 +117,7 @@ function listAllMoments(){
         deleteButton.href = '#';
         deleteButton.onclick = () => {
           $.ajax({
-            url : DELETE_POST+moment.id,
+            url : DELETE_POST.replace('id', moment.id),
             method : 'DELETE',
             headers : {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
