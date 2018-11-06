@@ -5,6 +5,7 @@
     - [x] Read    
     - [x] Add
     - [x] Delete
+    - [ ] Edit
 - [x] Tags system
 - [x] Relationship 
 - [x] User Profile Page
@@ -12,3 +13,6 @@
 - [ ] Friend Search
 - [x] Search post by tags
 - [ ] Edit User Profile Picture and Bio
+- [ ] Validasi post
+- [ ] Like Post
+- [ ] Registrasi User

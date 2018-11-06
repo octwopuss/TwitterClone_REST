@@ -199,10 +199,10 @@ class PostController extends Controller
 
 	//SHOW FRIEND POST
 	public function showFriendPost($username){
-		//CHECK IF FRIEND THEN FOLLOWED ELSE NOT FOLLOW
 		$getId = User::where('username', $username)->first()->id;
 		$posts = Post::where('user_id', $getId)->get();		
 		$tagsData = array();
+		$data = array();
 	    foreach($posts as $post){
 	    	$name = Post::find($post->id)->user->name; 
 	    	$username = Post::find($post->id)->user->username;
@@ -229,6 +229,7 @@ class PostController extends Controller
 		return response()->json($data, 200);
 	}
 
+	//SHOW POSTS BY TAGS
 	public function postsByTag($tag){
 		$tagId = Tags::where('tags', $tag)->first()->id;		
 		$posts = Tags::find($tagId)->post()->get();
@@ -256,5 +257,12 @@ class PostController extends Controller
 	    }       
 		
 		return response()->json($data, 200);
+	}
+
+	//SHOW FRIEND LIST
+	public function searchFriend(Request $request){
+
+		dd($request->fullUrl());
+		return response()->json($data);
 	}
 }

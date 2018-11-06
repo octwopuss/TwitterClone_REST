@@ -17,14 +17,14 @@
         <style>
         body{
           font-family: 'Roboto', sans-serif;
-          background: #191b22;          
+          background: #052944;          
         }
         h1,h2,h3,h4,h5,h6,p, span, div {
           color: white;
         }
 
         .card {
-          background: #282c37;
+          background: #15334a;
         }
 
         #upload_image {

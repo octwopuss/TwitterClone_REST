@@ -65,7 +65,7 @@ class UserController extends Controller
                                     ->first();        
         $user = User::where('username', $username)->first();
         // dd($relationship);
-        return view('scripts.profile', compact('user', 'relationship'));
+        return view('scripts.friendProfile', compact('user', 'relationship'));
     }
 
     public function postsByTags($tags){

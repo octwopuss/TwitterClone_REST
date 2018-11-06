@@ -19,15 +19,4 @@ Route::POST('/Auth', 'UserController@AuthenticateUser')->name('auth.user');
 Route::GET('/logout', 'UserController@logout')->name('logout');
 Route::GET('/user/{username}', 'UserController@showFriend')->name('showFriend');
 Route::GET('/tags/{data}', 'UserController@postsByTags')->name('postsByTags');
-Route::GET('/test', function(){	
-	$tags = Tags::find(2)->post()->get();
-	foreach($tags as $tag){
-		echo $tag->description.'<br>';
-	}
-});
-
-Route::GET('/cek', function(){
-	$some = 'hello';
-	$data = explode(',', $some);
-	print_r($data);
-});
+Route::GET('/profile', 'UserController@editProfile')->name('editProfile');

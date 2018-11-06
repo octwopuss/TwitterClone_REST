@@ -8,24 +8,31 @@
 	<div class="row">			
   		<nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar profile">
   			<div class="card">
-			  <div class="card-body">
-			    <h4 class="card-title" style="text-align: center;">Card title</h4>
-			    <img src="{{asset('img/pepe.png')}}" class="center rounded-circle">			    
-			    <center>{{'@'.$user->username}}</center>
-			    @if($user->id != Auth::guard('users')->user()->id)	
-			    	@if($relationship == NULL)
-			    	<p class="center hitFollow follow-box badge badge-info"><span class="follow-text">FOLLOW</span></p>
-			    	@else
-			    	<p class="center hitFollow follow-box badge badge-light"><span class="follow-text">FOLLOWED</span></p>
-			    	@endif
-		    	@else
-		    	<br>
-		    	@endif
-		    	<meta name="csrf-token" content="{{ csrf_token() }}" />		    	
-			    <p class="card-text">Code for fun and for food!</p>
-			    <span class="card-link">Follows : 102</span>
-			    <span class="card-link">Follower : 211</span>
-			  </div>
+					<p class="card-header">
+						<a href="#" style="color: white;">
+							<i class="fa fa-edit"></i>Edit Profile
+						</a>
+					</p>
+					<div class="card-body">
+						<h4 class="card-title" style="text-align: center;">{{$user->name}}</h4>
+						<img src="{{asset('img/pepe.png')}}" class="center rounded-circle">			    
+						<center>{{'@'.$user->username}}</center>
+						@if($user->id != Auth::guard('users')->user()->id)	
+							@if($relationship == NULL)
+							<p class="center hitFollow follow-box badge badge-info"><span class="follow-text">FOLLOW</span></p>
+							@else
+							<p class="center hitFollow follow-box badge badge-light"><span class="follow-text">FOLLOWED</span></p>
+							@endif
+						@else
+						<br>
+						@endif
+						<meta name="csrf-token" content="{{ csrf_token() }}" />		    	
+						<p class="card-text">Code for fun and for food!</p>
+						<center>
+							<a href="#" class="card-link">Follows : 102</a>
+							<a href="#" class="card-link">Follower : 211</a>
+						</center>
+					</div>
 			</div>
   		</nav>
   		<div class="col-md-5">
