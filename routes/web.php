@@ -14,6 +14,7 @@ use App\Tags;
 */
 
 Route::GET('/', 'UserController@index')->name('dashboard');
+Route::GET('/profile', 'UserController@bio')->name('bio');
 Route::GET('/login', 'UserController@login')->name('login');
 Route::POST('/Auth', 'UserController@AuthenticateUser')->name('auth.user');
 Route::GET('/logout', 'UserController@logout')->name('logout');
