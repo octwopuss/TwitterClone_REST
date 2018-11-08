@@ -21,3 +21,4 @@ Route::GET('/logout', 'UserController@logout')->name('logout');
 Route::GET('/user/{username}', 'UserController@showFriend')->name('showFriend');
 Route::GET('/tags/{data}', 'UserController@postsByTags')->name('postsByTags');
 Route::GET('/profile', 'UserController@editProfile')->name('editProfile');
+Route::GET('/search-friend', function(){return view('scripts.userSearch');})->name('searchFriend');

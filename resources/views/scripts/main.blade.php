@@ -3,7 +3,7 @@
 @section('importantPart')
 <div class="row">
   <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
-    <form id="upload_form" action="post" enctype="multipart/form-data">
+    <form id="upload_form" action="post" enctype="multipart/form-data" name="formPost">
       <meta name="csrf-token" content="{{ csrf_token() }}" />
       <br>
       <div class="form-group">                  
@@ -42,16 +42,31 @@
 
 const momentsElement = document.querySelector('.moments');        
 const popularTagsElement = document.querySelector('.popularTags');
-const form = document.querySelector('form');
+const form =  $('form[name="formPost"]');
+const formSearch = $('form[name="searchUser"]');  
 const loadingElement = document.querySelector('.loading');  
 const deleteButton = document.querySelector('#deletePost');              
 const API_URL = "{{route('moment.Show', Auth::guard('users')->user()->id)}}";        
 const TAGS_API_URL = "{{route('moment.popularTags')}}";
 const DELETE_POST = "{{route('moment.delete', 'id')}}";
 const TAGS_SEARCH = "{{route('postsByTags', 'data')}}";
+const FRIEND_SEARCH = "{{route('friend.search')}}";
 
-popularMoments();
-listAllMoments();
+popularMoments(); //GET ALL POPULAR TAGS (10)
+listAllMoments(); //GET ALL POST FORM FOLLOWED USERS
+
+console.log(extractUrlValue(window.location.href));
+
+
+//ALWAYS GET CURRENT URL
+//SO PARAMETER URL CAN BE EXTRACTED 
+function extractUrlValue(url)
+{
+    if (typeof(url) === 'undefined')
+        url = window.location.href;
+    var match = url.match('search=(.*)');
+    return match ? match[1] : null;
+}
 
 function popularMoments(){
   fetch(TAGS_API_URL)
@@ -153,7 +168,16 @@ function listAllMoments(){
     });
   }        
 
-form.addEventListener('submit', function(event){
+function searchFriend(name){
+
+}
+
+formSearch.submit(function(event){
+  var searchInput = window.location.href;
+  console.log(searchInput); 
+})
+
+form.submit(function(event){
   event.preventDefault();                 
   var description = $('#description').val();          
   let data = new FormData(this);          

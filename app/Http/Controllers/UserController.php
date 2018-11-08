@@ -64,7 +64,6 @@ class UserController extends Controller
                                     ->where('status', 1)
                                     ->first();        
         $user = User::where('username', $username)->first();
-        // dd($relationship);
         return view('scripts.friendProfile', compact('user', 'relationship'));
     }
 
@@ -78,8 +77,6 @@ class UserController extends Controller
     //BUAT BLADE TEMPLATE UNTUK MENGGANTI PROFILE USER
     //APAKAH DATA HARUS DITAMPILKAN DENGAN RESTFUL WAY???
     public function bio(){
-        
-
         return view('bio');
     }
 }

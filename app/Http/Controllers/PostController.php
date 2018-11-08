@@ -261,8 +261,7 @@ class PostController extends Controller
 
 	//SHOW FRIEND LIST
 	public function searchFriend(Request $request){
-
-		dd($request->fullUrl());
-		return response()->json($data);
+		$searchResult = User::where('name','LIKE' , $request->name.'%')->get();
+		return response()->json($searchResult);
 	}
 }
