@@ -20,5 +20,7 @@ Route::POST('/Auth', 'UserController@AuthenticateUser')->name('auth.user');
 Route::GET('/logout', 'UserController@logout')->name('logout');
 Route::GET('/user/{username}', 'UserController@showFriend')->name('showFriend');
 Route::GET('/tags/{data}', 'UserController@postsByTags')->name('postsByTags');
-Route::GET('/profile', 'UserController@editProfile')->name('editProfile');
+// Route::GET('/profile', 'UserController@editProfile')->name('editProfile');
 Route::GET('/search-friend', 'UserController@searchFriend')->name('searchFriend');
+Route::GET('/edit-profile/{id}', 'UserController@editProfile')->name('editProfile');
+Route::POST('/edit-profile/{id}', 'UserController@storeProfile')->name('storeProfile');

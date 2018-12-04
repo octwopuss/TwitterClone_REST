@@ -8,6 +8,7 @@ use Auth;
 use App\User;
 use App\Relationship;
 use App\Tags;
+use App\UserDetail;
 
 class UserController extends Controller
 {
@@ -46,6 +47,28 @@ class UserController extends Controller
         }
     }
 
+    public function editProfile($id){
+        return view('frontend.profile', compact('id'));
+    }
+
+    public function storeProfile(Request $req, $id){
+        $validation = $req->validate([
+            'profilepic' => 'required|image|max:2048',
+        ]);  
+
+        $user = new UserDetail();
+
+        if($req->hasFile('profilepic')){            
+            $fileName = $req->file('profilepic')->store('users_pic', 'public');                
+            $user->profilepic = $fileName;
+        }   
+        $user->user_id = $id;
+        $user->biograph = $req->bio;
+
+        $user->save();
+        return redirect()->route('dashboard')->with('msg', 'Berhasil mengeupdate profil');
+    }
+
     public function login(){
     	return view('login');
     }
@@ -64,7 +87,8 @@ class UserController extends Controller
                                     ->where('status', 1)
                                     ->first();        
         $user = User::where('username', $username)->first();
-        return view('scripts.friendProfile', compact('user', 'relationship'));
+        $user_image = UserDetail::where('user_id', $myId)->first();
+        return view('scripts.friendProfile', compact('user', 'relationship', 'user_image'));
     }
 
     public function postsByTags($tags){
@@ -72,12 +96,9 @@ class UserController extends Controller
         return view('scripts.tagsSearch', compact('tag'));
     }
 
-    //FITUR UNTUK MENGGANTI BIOGRAFI DAN PROFILE PICTURE DARI USER
-    //TAMBAH JUGA FITUR UNTUK MENGHITUNG FOLLOWER DARI FOLLOWS DARI USER
-    //BUAT BLADE TEMPLATE UNTUK MENGGANTI PROFILE USER
-    //APAKAH DATA HARUS DITAMPILKAN DENGAN RESTFUL WAY???
+
     public function bio(){
-        return view('bio');
+        return view('scripts.bio');
     }
 
     public function searchFriend(Request $request){

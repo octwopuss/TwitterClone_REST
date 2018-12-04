@@ -80,7 +80,7 @@ class PostController extends Controller
    //ADD NEW POST
    public function store(Request $request){   	      
    	$validation = $request->validate([
-   		'upload_image' => 'max:2048',
+   		'upload_image' => 'required|image|max:2048',
    	]);   	
 
 	$post = new Post();		      	

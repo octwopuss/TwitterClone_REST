@@ -11,7 +11,7 @@
                 <input class="form-control mr-sm-2" type="text" placeholder="Search" name="q" id="userSearch">
                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
             </form>
-            </li>                       
+            </li>                   
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-gear"></span></a>
                 <div class="dropdown-menu" style="margin-left: -120px;">

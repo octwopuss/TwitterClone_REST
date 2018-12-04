@@ -9,13 +9,13 @@
   		<nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar profile">
   			<div class="card">
 					<p class="card-header">
-						<a href="#" style="color: white;">
+						<a href="{{route('editProfile', $user->id)}}" style="color: white;">
 							<i class="fa fa-edit"></i>Edit Profile
 						</a>
 					</p>
 					<div class="card-body">
 						<h4 class="card-title" style="text-align: center;">{{$user->name}}</h4>
-						<img src="{{asset('img/pepe.png')}}" class="center rounded-circle">			    
+						<img src="{{asset('storage/'.$user->userdetail->profilepic)}}" class="center rounded-circle">			    
 						<center>{{'@'.$user->username}}</center>
 						@if($user->id != Auth::guard('users')->user()->id)	
 							@if($relationship == NULL)

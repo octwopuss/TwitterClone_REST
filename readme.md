@@ -10,9 +10,9 @@
 - [x] Relationship 
 - [x] User Profile Page
 - [ ] Friend list
-   - [ ] Friend Search
+- [x] Friend Search
 - [x] Search post by tags
-- [ ] Edit User Profile Picture and Bio
+- [x] Edit User Profile Picture and Bio
 - [ ] Validasi post
 - [ ] Like Post
 - [ ] Registrasi User
@@ -20,4 +20,4 @@
 
 ## BUG
 
-- [ ] Tags pada profil tidak dapat dicari
+- [ ] ~~Tags pada profil tidak dapat dicari~~
