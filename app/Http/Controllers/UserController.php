@@ -81,8 +81,7 @@ class UserController extends Controller
     }
 
     public function searchFriend(Request $request){
-        $result = $request->q;
-        // dd($result);
+        $result = User::where('name','LIKE' , $request->q.'%')->get();
         return view('frontend.friendSearchResult', compact('result'));
     }
 }
