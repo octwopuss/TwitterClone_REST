@@ -57,7 +57,6 @@ listAllMoments(); //GET ALL POST FORM FOLLOWED USERS
 
 console.log(extractUrlValue(window.location.href));
 
-
 //ALWAYS GET CURRENT URL
 //SO PARAMETER URL CAN BE EXTRACTED 
 function extractUrlValue(url)
@@ -168,15 +167,6 @@ function listAllMoments(){
     });
   }        
 
-function searchFriend(name){
-
-}
-
-formSearch.submit(function(event){
-  var searchInput = window.location.href;
-  console.log(searchInput); 
-})
-
 form.submit(function(event){
   event.preventDefault();                 
   var description = $('#description').val();          
@@ -201,7 +191,7 @@ form.submit(function(event){
       popularMoments();    
     },
     contentType : false, // prevents ajax sending the content type header.The content type header make Laravel 
-                        // handel the FormData Object as some serialized string.                
+                        // handle the FormData Object as some serialized string.                
     cache : false,
     processData : false,
   });

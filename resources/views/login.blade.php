@@ -6,7 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		<style type="text/css">
 			body{
-				background-color: #191b22;
+				background-color: #052944;
 			}		
 
 			.form-heading { color:#fff; font-size:23px;}

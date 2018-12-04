@@ -79,4 +79,10 @@ class UserController extends Controller
     public function bio(){
         return view('bio');
     }
+
+    public function searchFriend(Request $request){
+        $result = $request->q;
+        // dd($result);
+        return view('frontend.friendSearchResult', compact('result'));
+    }
 }
