@@ -10,4 +10,9 @@ class UserDetail extends Model
 
     protected $fillable = ['profilepic, biograph'];
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
 }

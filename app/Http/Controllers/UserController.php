@@ -9,6 +9,7 @@ use App\User;
 use App\Relationship;
 use App\Tags;
 use App\UserDetail;
+use Hash;
 
 class UserController extends Controller
 {
@@ -17,6 +18,40 @@ class UserController extends Controller
     		return view('scripts.main');
     	}        
     	return redirect()->route('login');
+    }
+
+    public function register(){
+        return view('register');
+    }
+
+    public function storeRegister(Request $request){
+        $this->validate($request, [      
+            'name' => 'required',
+            'email' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'repassword' => 'required',
+        ]);
+
+        if($request->password != $request->repassword){
+            return redirect()->route('register')->with('error', 'Password tidak sama!');
+        }
+        
+        $user = new User();        
+
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        $userdetail = new UserDetail();
+        $userdetail->user_id = $user->id;
+        $userdetail->biograph = "Halo :)";
+        $userdetail->profilepic = "placeholder/person.png";
+        $userdetail->save();
+
+        return redirect()->route('login')->with('info','Berhasil mendaftar, silahkan login!');
     }
 
     public function AuthenticateUser(Request $request){
@@ -53,20 +88,22 @@ class UserController extends Controller
 
     public function storeProfile(Request $req, $id){
         $validation = $req->validate([
-            'profilepic' => 'required|image|max:2048',
+            'profilepic' => 'image|max:2048',
         ]);  
 
-        $user = new UserDetail();
+        $user = UserDetail::where('user_id', $id)->first();
+
 
         if($req->hasFile('profilepic')){            
             $fileName = $req->file('profilepic')->store('users_pic', 'public');                
             $user->profilepic = $fileName;
         }   
-        $user->user_id = $id;
+
         $user->biograph = $req->bio;
 
         $user->save();
-        return redirect()->route('dashboard')->with('msg', 'Berhasil mengeupdate profil');
+
+        return redirect()->route('showFriend', $user->user->username)->with('msg', 'Berhasil mengeupdate profil');
     }
 
     public function login(){
@@ -86,9 +123,8 @@ class UserController extends Controller
                                     ->where('user_id_two', $swap[1])
                                     ->where('status', 1)
                                     ->first();        
-        $user = User::where('username', $username)->first();
-        $user_image = UserDetail::where('user_id', $myId)->first();
-        return view('scripts.friendProfile', compact('user', 'relationship', 'user_image'));
+        $user = User::where('username', $username)->first();        
+        return view('scripts.friendProfile', compact('user', 'relationship'));
     }
 
     public function postsByTags($tags){

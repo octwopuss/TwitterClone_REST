@@ -15,8 +15,9 @@
 - [x] Edit User Profile Picture and Bio
 - [ ] Validasi post
 - [ ] Like Post
-- [ ] Registrasi User
-
+- [x] Registrasi User
+- [ ] Comment a post
+- [ ] Follows System
 
 ## BUG
 

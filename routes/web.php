@@ -24,3 +24,5 @@ Route::GET('/tags/{data}', 'UserController@postsByTags')->name('postsByTags');
 Route::GET('/search-friend', 'UserController@searchFriend')->name('searchFriend');
 Route::GET('/edit-profile/{id}', 'UserController@editProfile')->name('editProfile');
 Route::POST('/edit-profile/{id}', 'UserController@storeProfile')->name('storeProfile');
+Route::GET('/register', 'UserController@register')->name('register');
+Route::POST('/register', 'UserController@storeRegister')->name('store.register');

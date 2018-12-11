@@ -69,42 +69,33 @@
 			<div class="main-div">
     			<div class="panel">
    					<h2>Bagi Momen <i class="fa fa-heart fa-xs"></i></h2>
-   					<p>Sosial sosial media-an</p>
+   					<p>REGISTER USER BARU</p>
    				</div>
-    			<form id="Login" action="{{route('auth.user')}}"" method="POST">
+    			<form id="Login" action="{{route('store.register')}}"" method="POST">
     				{{ csrf_field() }}
-					@if(Session::has('error'))
+    				@if(Session::has('error'))
     				<div class="alert alert-dismissible alert-warning">
 					  <button type="button" class="close" data-dismiss="alert">&times;</button>
 					  {{Session::get('error')}}
 					</div>		
-					@endif
-					@if(Session::has('info'))
-    				<div class="alert alert-dismissible alert-success">
-					  <button type="button" class="close" data-dismiss="alert">&times;</button>
-					  {{Session::get('info')}}
-					</div>		
-					@endif
-					<div class="form-group">
-           				<input type="text" class="form-control" id="inputEmail" placeholder="Username" name="username" value="@if(Session::has('username')) {{Session::get('username')}} @endif">
-					</div>
-        			<div class="form-group">	
-            			<input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
-        			</div>
-        			<div class="form-group clearfix">
-						<label class="fancy-checkbox element-left">
-							<input type="checkbox" name="remember">
-							<span>Remember me</span>
-						</label>
-					</div>
-        			<!-- <div class="forgot">
-        				<a href="reset.html">Forgot password?</a>
-					</div> -->
-        			<button type="submit" class="btn btn-outline-primary" style="width: 100%;">Login</button>
-    			</form>
-					<div class="form-group">
-						<a href="{{route('register')}}" class="btn btn-outline-info" style="width: 100%;">Register</a>
-					</div>					
+					@endif     
+                    <div class="form-group">
+           				<input type="text" class="form-control" placeholder="Full Name" name="name">
+					</div> 
+                    <div class="form-group">
+           				<input type="text" class="form-control" placeholder="Username" name="username">
+					</div> 
+                    <div class="form-group">
+           				<input type="email" class="form-control" placeholder="Email" name="email">
+					</div> 
+                    <div class="form-group">
+           				<input type="password" class="form-control" placeholder="Password" name="password">
+					</div> 
+                    <div class="form-group">
+           				<input type="password" class="form-control" placeholder="Retype Password" name="repassword">
+					</div> 			
+        			<button type="submit" class="btn btn-outline-primary" style="width: 100%;">Register</button>
+    			</form>										
     		</div>
 		</div>
 	</div>
