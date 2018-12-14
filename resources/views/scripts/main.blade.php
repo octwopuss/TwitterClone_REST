@@ -40,6 +40,7 @@
 
 <script type="text/javascript">
 
+
 const momentsElement = document.querySelector('.moments');        
 const popularTagsElement = document.querySelector('.popularTags');
 const form =  $('form[name="formPost"]');
@@ -142,7 +143,8 @@ function listAllMoments(){
               comment : comment
             })
           })
-
+          
+          commentInput.value = '';
         }
 
         //DESCRIPTION 

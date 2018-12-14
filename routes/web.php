@@ -26,8 +26,3 @@ Route::GET('/edit-profile/{id}', 'UserController@editProfile')->name('editProfil
 Route::POST('/edit-profile/{id}', 'UserController@storeProfile')->name('storeProfile');
 Route::GET('/register', 'UserController@register')->name('register');
 Route::POST('/register', 'UserController@storeRegister')->name('store.register');
-
-Route::GET('/date', function(){
-    $date = DateTime::createFromFormat("Y-m-d", "2068-06-15");
-    echo $date->format("Y");
-});
