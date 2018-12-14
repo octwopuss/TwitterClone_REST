@@ -13,6 +13,7 @@ use App\Post;
 use App\Tags;
 use App\Relationship;
 use App\User;
+use App\Comment;
 
 class PostController extends Controller
 {
@@ -256,6 +257,26 @@ class PostController extends Controller
 	    	];
 	    }       
 		
+		return response()->json($data, 200);
+	}
+
+	//show comments
+	public function showComment($id){
+
+	}
+
+	//SUBMIT SOME COMMENT
+	public function storeComment(Request $request, $id){				
+		Comment::create([
+			'posts_id' => $request->posts_id,
+			'comment' => $request->comment
+		]);
+	
+		$data = [
+			'posts_id' => $request->posts_id,
+			'comment' => $request->comment
+		];
+
 		return response()->json($data, 200);
 	}
 

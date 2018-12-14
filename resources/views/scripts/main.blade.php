@@ -3,7 +3,7 @@
 @section('importantPart')
 <div class="row">
   <nav class="col-sm-3 col-md-3 hidden-xs-down bg-faded sidebar">
-    <form id="upload_form" action="post" enctype="multipart/form-data" name="formPost">
+    <form id="upload_form" enctype="multipart/form-data" name="formPost">
       <meta name="csrf-token" content="{{ csrf_token() }}" />
       <br>
       <div class="form-group">                  
@@ -51,6 +51,7 @@ const TAGS_API_URL = "{{route('moment.popularTags')}}";
 const DELETE_POST = "{{route('moment.delete', 'id')}}";
 const TAGS_SEARCH = "{{route('postsByTags', 'data')}}";
 const FRIEND_SEARCH = "{{route('friend.search')}}";
+const STORE_COMMENT = "{{route('comment.store', 'id')}}";
 
 popularMoments(); //GET ALL POPULAR TAGS (10)
 listAllMoments(); //GET ALL POST FORM FOLLOWED USERS
@@ -95,6 +96,9 @@ function listAllMoments(){
         const tags = document.createElement('a'); 
         const desc = document.createElement('p');  
         const image = document.createElement('img'); 
+        const formComment = document.createElement('form');
+        const commentInput = document.createElement('input');
+        const commentBtn = document.createElement('button');
         const imagePath = window.location.origin + '/storage/' + moment.image;
         const deleteButton = document.createElement('a');
         const user_id = "{{Auth::guard('users')->id()}}";
@@ -109,7 +113,37 @@ function listAllMoments(){
         cardBody1.setAttribute('class', 'card-body');
         cardBody2.setAttribute('class', 'card-body');
         tags.setAttribute('class', 'card-link');
-        cardFooter.setAttribute('class', 'card-footer text-muted');                        
+        cardFooter.setAttribute('class', 'card-footer text-muted');    
+        formComment.setAttribute('name', 'commentForm');
+        commentInput.style.borderRadius = '20px';
+        commentInput.setAttribute('placeholder', 'Say something about this..');
+        commentInput.setAttribute('type', 'text');
+        commentInput.style.width = '90%';
+        commentInput.style.height = '1.5em';
+        commentInput.style.padding = '1em';
+        commentInput.style.outlineStyle = 'none';
+        commentBtn.setAttribute('type', 'submit');
+        commentBtn.setAttribute('class', 'fa fa-paper-plane');
+        commentBtn.style.height = '2em';
+        commentBtn.style.borderRadius = '30px';
+        commentBtn.style.marginLeft = '1em';
+        commentBtn.style.outlineStyle = 'none';
+        commentBtn.onclick = (event) => {
+          event.preventDefault();
+          let comment = commentInput.value;
+
+          fetch(STORE_COMMENT.replace('id', moment.id), {
+            method : 'POST',
+            headers : {
+              'Content-type' : 'application/json',
+            },
+            body : JSON.stringify({
+              posts_id : moment.id,
+              comment : comment
+            })
+          })
+
+        }
 
         //DESCRIPTION 
         desc.textContent = moment.description;                                
@@ -121,11 +155,11 @@ function listAllMoments(){
         tags.innerHTML = `${moment.tags.map((item, i)=> 
           `<a href="${TAGS_SEARCH.replace('data', moment.tags[i])}" style="text-decoration: none;"> <span class="badge badge-primary">${moment.tags[i]}</span> </a>`)}`;
         }
-
+        
         //BREAD FOOTER
         deleteButton.setAttribute('class', 'badge badge-danger');  
         deleteButton.setAttribute('id', 'deletePost');   
-                                               
+                                              
         deleteButton.textContent = 'Delete';
         deleteButton.style.float = 'right';   
         deleteButton.href = '#';
@@ -151,6 +185,10 @@ function listAllMoments(){
           cardFooter.appendChild(deleteButton);
         }
         
+        //COMMENT SECTION
+        formComment.appendChild(commentInput);
+        formComment.appendChild(commentBtn);
+        
         cardBody1.appendChild(desc);
         cardBody2.appendChild(span);                
         cardBody2.appendChild(tags);                
@@ -159,10 +197,13 @@ function listAllMoments(){
         card.appendChild(cardBody1);                
         card.appendChild(cardBody2);
         card.appendChild(cardFooter);
-
+        card.appendChild(formComment);
+        
         loadingElement.style.display = 'none';
         
+       
         momentsElement.appendChild(card);
+        
       });              
     });
   }        

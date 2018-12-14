@@ -21,4 +21,4 @@
 
 ## BUG
 
-- [ ] ~~Tags pada profil tidak dapat dicari~~
+- [x] ~~Tags pada profil tidak dapat dicari~~

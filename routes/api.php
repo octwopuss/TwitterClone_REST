@@ -11,3 +11,5 @@ Route::POST('/friendship/create', 'PostController@createFriendship')->name('frie
 Route::POST('/friendship/cancel','PostController@cancelFriendRequest')->name('friend.cancel');
 Route::GET('/user/{username}', 'PostController@showFriendPost')->name('friend.showPost');
 Route::GET('/search', 'PostController@searchFriend')->name('friend.search');
+Route::GET('/comment/{id}', 'PostController@showComment')->name('comment.show');
+Route::POST('/comment/{id}', 'PostController@storeComment')->name('comment.store');
