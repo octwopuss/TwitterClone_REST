@@ -80,13 +80,13 @@
 					</div>		
 					@endif     
                     <div class="form-group">
-           				<input type="text" class="form-control" placeholder="Full Name" name="name">
+           				<input type="text" class="form-control" placeholder="Full Name" name="name" value="{{old('name')}}">
 					</div> 
                     <div class="form-group">
-           				<input type="text" class="form-control" placeholder="Username" name="username">
+           				<input type="text" class="form-control" placeholder="Username" name="username" value="{{old('username')}}">
 					</div> 
                     <div class="form-group">
-           				<input type="email" class="form-control" placeholder="Email" name="email">
+           				<input type="email" class="form-control" placeholder="Email" name="email" value="{{old('email')}}">
 					</div> 
                     <div class="form-group">
            				<input type="password" class="form-control" placeholder="Password" name="password">

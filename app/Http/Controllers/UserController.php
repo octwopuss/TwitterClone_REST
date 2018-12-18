@@ -34,7 +34,7 @@ class UserController extends Controller
         ]);
 
         if($request->password != $request->repassword){
-            return redirect()->route('register')->with('error', 'Password tidak sama!');
+            return redirect()->route('register')->withInput($request->except('password'))->with('error', 'Password tidak sama!');
         }
         
         $user = new User();        
@@ -64,10 +64,9 @@ class UserController extends Controller
         $password = $request->input('password');
         $remember = $request->input('remember');
         $credentials = [
-        'username' => $username, 
-        'password' => $password,
+            'username' => $username, 
+            'password' => $password,
         ];        
-
 
         if(!User::whereusername($username)->count()){
             return back()->with('error', 'username tidak terdaftar');

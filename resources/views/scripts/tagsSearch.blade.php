@@ -55,7 +55,7 @@ function popularMoments(){
 
 function listAllMoments(){
   momentsElement.innerHTML = '';                
-  fetch(API_URL, {method: 'GET'})
+  fetch(API_URL)
     .then((response)=> response.json())
     .then((moments)=> { 
       console.log(moments);     
