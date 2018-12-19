@@ -53,6 +53,7 @@ const DELETE_POST = "{{route('moment.delete', 'id')}}";
 const TAGS_SEARCH = "{{route('postsByTags', 'data')}}";
 const FRIEND_SEARCH = "{{route('friend.search')}}";
 const STORE_COMMENT = "{{route('comment.store', 'id')}}";
+const SHOW_COMMENT = "{{route('comment.show', 'id')}}";
 
 popularMoments(); //GET ALL POPULAR TAGS (10)
 listAllMoments(); //GET ALL POST FORM FOLLOWED USERS
@@ -101,7 +102,7 @@ function listAllMoments(){
         const commentInput = document.createElement('input');
         const commentBtn = document.createElement('button');
         const imagePath = window.location.origin + '/storage/' + moment.image;
-        const deleteButton = document.createElement('a');
+        const deleteButton = document.createElement('a');        
         const user_id = "{{Auth::guard('users')->id()}}";
         const username = moment.id;                
 
@@ -139,13 +140,14 @@ function listAllMoments(){
               'Content-type' : 'application/json',
             },
             body : JSON.stringify({
+              user_id : "{{Auth::guard('users')->user()->id}}",
               posts_id : moment.id,
               comment : comment
             })
           })
           
           commentInput.value = '';
-        }
+        }        
 
         //DESCRIPTION 
         desc.textContent = moment.description;                                
@@ -187,9 +189,11 @@ function listAllMoments(){
           cardFooter.appendChild(deleteButton);
         }
         
-        //COMMENT SECTION
+        //COMMENT SECTION        
         formComment.appendChild(commentInput);
-        formComment.appendChild(commentBtn);
+        formComment.appendChild(commentBtn);        
+        // SHOW COMMENT
+
         
         cardBody1.appendChild(desc);
         cardBody2.appendChild(span);                
@@ -199,17 +203,28 @@ function listAllMoments(){
         card.appendChild(cardBody1);                
         card.appendChild(cardBody2);
         card.appendChild(cardFooter);
-        card.appendChild(formComment);
-        
+        card.appendChild(formComment);                
+        fetch(SHOW_COMMENT.replace('id', moment.id))
+          .then(res => res.json())
+          .then(comments => {            
+            comments.forEach(comment => {
+              console.log(comment);
+              const commentDiv = document.createElement('div');
+              const commentedUser = document.createElement('a');         
+              const SHOWFRIEND = "{{route('showFriend', 'id')}}".replace('id', comment.user_commented);                        
+              commentDiv.setAttribute('class', 'card-footer text-muted');              
+              commentDiv.innerHTML = `<a href="${SHOWFRIEND}">${comment.user_commented}</a> ${comment.comment}`;
+              card.appendChild(commentDiv);
+            })                        
+          })
+
         loadingElement.style.display = 'none';
-        
-       
+               
         momentsElement.appendChild(card);
         
       });              
     });
-  }        
-
+  }      
 
 form.submit(function(event){
   event.preventDefault();                 
@@ -240,7 +255,7 @@ form.submit(function(event){
     processData : false,
   });
   $("#tags").tagsinput('removeAll');
-  form.reset();  
+  $("form[name=formPost]")[0].reset();  
 });
 
 </script>

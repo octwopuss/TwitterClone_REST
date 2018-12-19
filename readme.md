@@ -16,9 +16,47 @@
 - [ ] Validasi post
 - [ ] Like Post
 - [x] Registrasi User
-- [ ] Comment a post
+- [x] Comment a post
 - [ ] Follows System
 
 ## BUG
 
 - [x] ~~Tags pada profil tidak dapat dicari~~
+
+
+## URGENT TO DO LIST
+<hr>
+
+
+### FRIEND SEARCH
+
+- [x] Tampilkan gambar
+- [x] Tampilkan biograph user
+- ~~[ ] Make follow button work~~
+
+### COMMENT
+
+- [x] Store foreign key user di tabel comment
+- [x] Tampilkan comment section
+- [x] Delete a comment
+- [x] on delete cascade
+
+### FOLLOWS
+- [ ] Tampilkan jumlah followers
+- [ ] Tampilkan siapa saja yang followed dan following
+
+### LIKES 
+- [ ] Buat table likes
+- [ ] Buat fitur like
+
+<hr>
+
+## OPTIONAL
+<hr>
+- [ ] Paginate Comment section
+- [ ] Buat post bisa diedit
+- [ ] Website jadi responsive
+- [ ] Beautify the webs
+- [ ] Infinty scroll pagination (5 each)
+- [ ] Tampilkan pesan tidak post jika user belum pernah memposting
+- [ ] Refresh comment ketika submit

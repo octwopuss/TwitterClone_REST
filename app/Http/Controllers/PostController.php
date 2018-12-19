@@ -262,12 +262,25 @@ class PostController extends Controller
 
 	//show comments
 	public function showComment($id){
+		$comments = Post::find($id)->comment;
+		$data = [];
+		foreach($comments as $comment){
+			$user_commented = User::find($comment->user_id);			
+			$data[] = [
+				'user_commented' => $user_commented->username,
+				'comment' => $comment->comment,
+				'created_at' => $comment->created_at,
+				'updated_at' => $comment->updated_at
+			];			
+		}	
 
+		return response()->json($data, 200);
 	}
 
 	//SUBMIT SOME COMMENT
-	public function storeComment(Request $request, $id){				
+	public function storeComment(Request $request, $id){		
 		Comment::create([
+			'user_id' => $request->user_id,
 			'posts_id' => $request->posts_id,
 			'comment' => $request->comment
 		]);
