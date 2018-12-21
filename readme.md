@@ -27,7 +27,6 @@
 ## URGENT TO DO LIST
 <hr>
 
-
 ### FRIEND SEARCH
 
 - [x] Tampilkan gambar
@@ -38,6 +37,9 @@
 
 - [x] Store foreign key user di tabel comment
 - [x] Tampilkan comment section
+	- [x] main.blade
+	- [ ] tagsSearch.blade
+	- [ ] friendProfile.blade
 - [x] Delete a comment
 - [x] on delete cascade
 
@@ -52,7 +54,7 @@
 <hr>
 
 ## OPTIONAL
-<hr>
+
 - [ ] Paginate Comment section
 - [ ] Buat post bisa diedit
 - [ ] Website jadi responsive
