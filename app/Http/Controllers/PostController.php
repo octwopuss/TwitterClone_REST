@@ -18,7 +18,7 @@ use App\Comment;
 class PostController extends Controller
 {
 
-	//RETURN ALL POSTS	
+	//RETURN ALL POSTS FROM FOLLOWED FRIEND
    public function posts(Post $post, $id){   	   	
    	$relationship = Relationship::where('user_id_one', $id)   		   								
    								->where('status', 1)
@@ -76,6 +76,34 @@ class PostController extends Controller
 	}
 
     return response()->json($data);
+   }
+
+   //RECENT POST
+   public function recent(){
+	   $posts = Post::orderBy('created_at')->paginate(10);
+	   $data = [];
+	   foreach($posts as $post){
+		$name = Post::find($post->id)->user->name; 
+		$username = Post::find($post->id)->user->username;
+		$post_tags = DB::table('post_tags')->where('post_id', $post->id)->get();
+    	$tagsData = [];
+    	foreach($post_tags as $tag){
+    		$tags = Tags::find($tag->tags_id);
+    		$tagsData[] = $tags->tags;
+		}
+		$date = date('d/m/Y h:i:s', strtotime($post->created_at));	
+		$data[] = [
+			'id' => $post->id,
+    		'user_id' => $post->user_id,
+    		'name' => $name,
+    		'username' => $username,
+    		'description' => $post->description,
+    		'image' => $post->image,
+    		'tags' => $tagsData,
+    		'created_at' => $date,
+		];
+	   }
+	   return response()->json($data, 200);
    }
 
    //ADD NEW POST

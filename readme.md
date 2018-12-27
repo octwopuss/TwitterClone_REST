@@ -18,7 +18,7 @@
 - [x] Registrasi User
 - [x] Comment a post
 - [ ] Follows System
-- [ ] Global recent post (paginate to 20)
+- [x] Global recent post (paginate to 20)
 
 ## BUG
 
@@ -61,5 +61,5 @@
 - [ ] Website jadi responsive
 - [ ] Beautify the webs
 - [ ] Infinty scroll pagination (5 each)
-- [ ] Tampilkan pesan tidak post jika user belum pernah memposting
+- [ ] Tampilkan pesan tidak ada post jika user belum pernah memposting
 - [ ] Refresh comment ketika submit

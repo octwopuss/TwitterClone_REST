@@ -140,4 +140,8 @@ class UserController extends Controller
         $result = User::where('name','LIKE' , $request->q.'%')->get();                                
         return view('frontend.friendSearchResult', compact('result'));
     }
+
+    public function recent(){
+        return view('scripts.recent');
+    }
 }

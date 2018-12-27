@@ -26,3 +26,4 @@ Route::GET('/edit-profile/{id}', 'UserController@editProfile')->name('editProfil
 Route::POST('/edit-profile/{id}', 'UserController@storeProfile')->name('storeProfile');
 Route::GET('/register', 'UserController@register')->name('register');
 Route::POST('/register', 'UserController@storeRegister')->name('store.register');
+Route::GET('/recent', 'UserController@recent')->name('recentPost');

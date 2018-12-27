@@ -15,7 +15,8 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span class="fa fa-gear"></span></a>
                 <div class="dropdown-menu" style="margin-left: -120px;">
-                    <a class="dropdown-item" href="{{route('dashboard')}}"><i class="fa fa-home"></i> Beranda</a>             
+                    <a class="dropdown-item" href="{{route('dashboard')}}"><i class="fa fa-home"></i> Beranda</a>     
+                    <a class="dropdown-item" href="{{route('recentPost')}}"><i class="fa fa-history"></i> Terbaru</a>          
                     <a class="dropdown-item" href="{{ route('showFriend', Auth::guard('users')->user()->username) }}"><i class="fa fa-user"></i> Profil</a>
                     <a class="dropdown-item" href="{{ route('logout') }}"><i class="fa fa-power-off"></i> Logout</a>                    
                 </div>
