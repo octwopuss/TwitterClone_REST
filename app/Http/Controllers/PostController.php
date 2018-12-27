@@ -14,6 +14,7 @@ use App\Tags;
 use App\Relationship;
 use App\User;
 use App\Comment;
+use App\Follower;
 
 class PostController extends Controller
 {
@@ -189,12 +190,24 @@ class PostController extends Controller
 	}
 
 	//ADD FRIEND
-	public function createFriendship(Request $request){						
+	public function createFriendship(Request $request){
 		Relationship::create([
 			"user_id_one" => $request->user_id_one,
 			"user_id_two" => $request->user_id_two,
 			"status" => $request->status,
 			"action_user_id" => $request->action_user_id
+		]);
+
+			// Increment follows
+		$currentFollowerUser = Follower::where('user_id',$request->user_id_one)->first()->follows;
+		$updateFollowerUser = Follower::where('user_id',$request->user_id_one)->update([
+			'follows' => $currentFollowerUser+1
+		]);
+
+			// Increment follower
+		$currentFollowerTarget = Follower::where('user_id',$request->user_id_two)->first()->follower;
+		$updateFollowerTarget = Follower::where('user_id',$request->user_id_two)->update([
+			'follower' => $currentFollowerTarget+1
 		]);
 
 		$data = [
@@ -218,6 +231,18 @@ class PostController extends Controller
 					->where('user_id_two', $request->user_id_two)
 					->where('status', 1)
 					->delete();
+
+			// Decrement follows
+			$currentFollowerUser = Follower::where('user_id',$request->user_id_one)->first()->follows;
+			$updateFollowerUser = Follower::where('user_id',$request->user_id_one)->update([
+				'follows' => $currentFollowerUser-1
+			]);
+	
+				// Decrement follower
+			$currentFollowerTarget = Follower::where('user_id',$request->user_id_two)->first()->follower;
+			$updateFollowerTarget = Follower::where('user_id',$request->user_id_two)->update([
+				'follower' => $currentFollowerTarget-1
+			]);
 
 		$response = [
 			'message' => 'Friend request cancled',					

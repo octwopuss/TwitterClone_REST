@@ -17,7 +17,7 @@
 - [ ] Like Post
 - [x] Registrasi User
 - [x] Comment a post
-- [ ] Follows System
+- [x] Follows System
 - [x] Global recent post (paginate to 20)
 
 ## BUG
@@ -45,7 +45,7 @@
 - [x] on delete cascade
 
 ### FOLLOWS
-- [ ] Tampilkan jumlah followers
+- [x] Tampilkan jumlah followers
 - [ ] Tampilkan siapa saja yang followed dan following
 
 ### LIKES 

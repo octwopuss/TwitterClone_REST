@@ -9,6 +9,7 @@ use App\User;
 use App\Relationship;
 use App\Tags;
 use App\UserDetail;
+use App\Follower;   
 use Hash;
 
 class UserController extends Controller
@@ -37,6 +38,8 @@ class UserController extends Controller
             return redirect()->route('register')->withInput($request->except('password'))->with('error', 'Password tidak sama!');
         }
         
+
+        //ADD NEW USER 
         $user = new User();        
 
         $user->name = $request->name;
@@ -45,11 +48,21 @@ class UserController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
+        // ADD USER DETAIL
         $userdetail = new UserDetail();
         $userdetail->user_id = $user->id;
         $userdetail->biograph = "Halo :)";
         $userdetail->profilepic = "placeholder/person.png";
         $userdetail->save();
+
+        
+        // ADD USER FOLLOWS
+
+        $follow = new Follower();
+        $follow->user_id = $user->id;
+        $follow->follows = 0;
+        $follow->follower = 0;
+        $follow->save();
 
         return redirect()->route('login')->with('info','Berhasil mendaftar, silahkan login!');
     }
@@ -122,8 +135,9 @@ class UserController extends Controller
                                     ->where('user_id_two', $swap[1])
                                     ->where('status', 1)
                                     ->first();        
-        $user = User::where('username', $username)->first();        
-        return view('scripts.friendProfile', compact('user', 'relationship'));
+        $user = User::where('username', $username)->first();     
+        $follows = Follower::where('user_id', $user->id)->first();
+        return view('scripts.friendProfile', compact('user', 'relationship', 'follows'));
     }
 
     public function postsByTags($tags){
