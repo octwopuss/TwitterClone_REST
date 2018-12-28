@@ -160,7 +160,8 @@ class UserController extends Controller
         return view('scripts.recent');
     }
 
-    public function followers($username){
+    public function followers($username){    
+        //user_id_one itu follower        
         $user = User::where('username', $username)->first();
         $followers = Relationship::where('user_id_two', $user->id)->where('action_user_id','!=', $user->id)->get();
         $follows = null;
@@ -168,6 +169,7 @@ class UserController extends Controller
     }
 
     public function follows($username){
+        // user_id_two itu follows 
         $user = User::where('username', $username)->first();
         $follows = Relationship::where('user_id_one', $user->id)->where('action_user_id', $user->id)->get();
         $followers = null;

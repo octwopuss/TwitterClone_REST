@@ -29,8 +29,8 @@
 						<meta name="csrf-token" content="{{ csrf_token() }}" />		    	
 						<p class="card-text">{{$user->userdetail->biograph}}</p>
 						<center>
-							<a href="#" class="card-link">Follows : {{$follows->follows}}</a>
-							<a href="#" class="card-link">Follower : {{$follows->follower}}</a>
+							<a href="{{route('follows', $user->username)}}" class="card-link">Follows : {{$follows->follows}}</a>
+							<a href="{{route('followers', $user->username)}}" class="card-link">Follower : {{$follows->follower}}</a>
 						</center>
 					</div>
 			</div>

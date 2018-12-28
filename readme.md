@@ -9,7 +9,7 @@
 - [x] Tags system
 - [x] Relationship 
 - [x] User Profile Page
-- [ ] Friend list
+- [x] Friend list
 - [x] Friend Search
 - [x] Search post by tags
 - [x] Edit User Profile Picture and Bio
