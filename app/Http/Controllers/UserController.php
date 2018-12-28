@@ -151,11 +151,27 @@ class UserController extends Controller
     }
 
     public function searchFriend(Request $request){
-        $result = User::where('name','LIKE' , $request->q.'%')->get();                                
+        $result = User::where('name','LIKE' , $request->q.'%')->orWhere('username','LIKE' , $request->q.'%')
+                ->orWhere('email','LIKE' , $request->q.'%')->get();                                
         return view('frontend.friendSearchResult', compact('result'));
     }
 
     public function recent(){
         return view('scripts.recent');
     }
+
+    public function followers($username){
+        $user = User::where('username', $username)->first();
+        $followers = Relationship::where('user_id_two', $user->id)->where('action_user_id','!=', $user->id)->get();
+        $follows = null;
+        return view('frontend.followList', compact('followers', 'follows'));
+    }
+
+    public function follows($username){
+        $user = User::where('username', $username)->first();
+        $follows = Relationship::where('user_id_one', $user->id)->where('action_user_id', $user->id)->get();
+        $followers = null;
+        return view('frontend.followList', compact('follows', 'followers'));
+    }
+
 }

@@ -27,3 +27,5 @@ Route::POST('/edit-profile/{id}', 'UserController@storeProfile')->name('storePro
 Route::GET('/register', 'UserController@register')->name('register');
 Route::POST('/register', 'UserController@storeRegister')->name('store.register');
 Route::GET('/recent', 'UserController@recent')->name('recentPost');
+Route::GET('/{username}/followers', 'UserController@followers')->name('followers');
+Route::GET('/{username}/follows', 'UserController@follows')->name('follows');

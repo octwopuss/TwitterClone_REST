@@ -20,9 +20,6 @@
 - [x] Follows System
 - [x] Global recent post (paginate to 20)
 
-## BUG
-
-- [x] ~~Tags pada profil tidak dapat dicari~~
 
 
 ## URGENT TO DO LIST
@@ -32,7 +29,6 @@
 
 - [x] Tampilkan gambar
 - [x] Tampilkan biograph user
-- ~~[ ] Make follow button work~~
 
 ### COMMENT
 
