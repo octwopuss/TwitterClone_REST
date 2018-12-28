@@ -17,7 +17,10 @@
     </form>
   </nav> 
   <div class="col-md-5">
-    <br><br>              
+    <br><br>         
+    <div class="no-post-yet">
+      <center>Tidak ada post :(, coba buat yang baru</center>
+    </div>     
     <div class="loading">
       <center> <img src="{{asset('/img/loading2.gif')}}" style="width: 100px; height: 100px;"></center>                
     </div>
@@ -46,6 +49,7 @@ const popularTagsElement = document.querySelector('.popularTags');
 const form =  $('form[name="formPost"]');
 const formSearch = $('form[name="searchUser"]');  
 const loadingElement = document.querySelector('.loading');  
+const emptyMessage = document.querySelector('.no-post-yet');
 const deleteButton = document.querySelector('#deletePost');              
 const API_URL = "{{route('moment.Show', Auth::guard('users')->user()->id)}}";        
 const TAGS_API_URL = "{{route('moment.popularTags')}}";
@@ -59,6 +63,8 @@ popularMoments(); //GET ALL POPULAR TAGS (10)
 listAllMoments(); //GET ALL POST FORM FOLLOWED USERS
 
 console.log(extractUrlValue(window.location.href));
+
+emptyMessage.style.display = 'none';
 
 //ALWAYS GET CURRENT URL
 //SO PARAMETER URL CAN BE EXTRACTED 
@@ -88,6 +94,10 @@ function listAllMoments(){
     .then((response)=> response.json())
     .then((moments)=> { 
       console.log(moments);     
+      if(moments == ''){
+       loadingElement.style.display = 'none';       
+       emptyMessage.style.display = 'block';
+      }      
       moments.reverse(); 
       moments.forEach(moment => {                          
         const card = document.createElement('div');                
@@ -97,12 +107,12 @@ function listAllMoments(){
         const span = document.createElement('span');
         const tags = document.createElement('a'); 
         const desc = document.createElement('p');  
-        const image = document.createElement('img'); 
+        const image = document.createElement('img');                 
+        const imagePath = window.location.origin + '/storage/' + moment.image;
+        const deleteButton = document.createElement('a');        
         const formComment = document.createElement('form');
         const commentInput = document.createElement('input');
         const commentBtn = document.createElement('button');
-        const imagePath = window.location.origin + '/storage/' + moment.image;
-        const deleteButton = document.createElement('a');        
         const user_id = "{{Auth::guard('users')->id()}}";
         const username = moment.id;                
 
@@ -130,8 +140,7 @@ function listAllMoments(){
         commentBtn.style.borderRadius = '30px';
         commentBtn.style.marginLeft = '1em';
         commentBtn.style.outlineStyle = 'none';
-        commentBtn.onclick = (event) => {
-          event.preventDefault();
+        commentBtn.onclick = (event) => {          
           let comment = commentInput.value;
 
           fetch(STORE_COMMENT.replace('id', moment.id), {

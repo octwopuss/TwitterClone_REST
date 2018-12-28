@@ -14,7 +14,7 @@
 - [x] Search post by tags
 - [x] Edit User Profile Picture and Bio
 - [ ] Validasi post
-- [ ] Like Post
+~~ - [ ] Like Post ~~
 - [x] Registrasi User
 - [x] Comment a post
 - [x] Follows System
@@ -35,18 +35,15 @@
 - [x] Store foreign key user di tabel comment
 - [x] Tampilkan comment section
 	- [x] main.blade
-	- [ ] tagsSearch.blade
-	- [ ] friendProfile.blade
+	- [x] recent.blade
+	- [x] tagsSearch.blade
+	- [x] friendProfile.blade
 - [x] Delete a comment
 - [x] on delete cascade
 
 ### FOLLOWS
 - [x] Tampilkan jumlah followers
-- [ ] Tampilkan siapa saja yang followed dan following
-
-### LIKES 
-- [ ] Buat table likes
-- [ ] Buat fitur like
+- [x] Tampilkan siapa saja yang followed dan following
 
 <hr>
 
@@ -59,3 +56,4 @@
 - [ ] Infinty scroll pagination (5 each)
 - [ ] Tampilkan pesan tidak ada post jika user belum pernah memposting
 - [ ] Refresh comment ketika submit
+- [ ] Buat fitur like

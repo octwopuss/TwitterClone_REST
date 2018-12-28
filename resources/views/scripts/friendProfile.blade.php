@@ -51,6 +51,9 @@
 	const API_URL = "{{route('friend.showPost', $user->username)}}";
 	const API_ADD_FRIEND = "{{route('friend.create')}}";
 	const API_CANCEL_FRIENDREQUEST = "{{route('friend.cancel')}}";
+	const STORE_COMMENT = "{{route('comment.store', 'id')}}";
+	const SHOW_COMMENT = "{{route('comment.show', 'id')}}";
+
 
 	$('.hitFollow').click(function(){
 		console.log('clicked');
@@ -139,6 +142,9 @@
 	        const image = document.createElement('img'); 
 	        const imagePath = window.location.origin + '/storage/' + moment.image;
 	        const deleteButton = document.createElement('a');
+	        const formComment = document.createElement('form');
+	        const commentInput = document.createElement('input');
+	        const commentBtn = document.createElement('button');
 	        const user_id = "{{Auth::guard('users')->id()}}";
 	        const username = moment.id;                
 
@@ -152,6 +158,37 @@
 	        cardBody2.setAttribute('class', 'card-body');
 	        tags.setAttribute('class', 'card-link');
 	        cardFooter.setAttribute('class', 'card-footer text-muted');                        
+	        formComment.setAttribute('name', 'commentForm');                  
+	        commentInput.style.borderRadius = '20px';
+	        commentInput.setAttribute('placeholder', 'Say something about this..');
+	        commentInput.setAttribute('type', 'text');
+	        commentInput.style.width = '90%';
+	        commentInput.style.height = '1.5em';
+	        commentInput.style.padding = '1em';
+	        commentInput.style.outlineStyle = 'none';
+	        commentBtn.setAttribute('type', 'submit');
+	        commentBtn.setAttribute('class', 'fa fa-paper-plane');
+	        commentBtn.style.height = '2em';
+	        commentBtn.style.borderRadius = '30px';
+	        commentBtn.style.marginLeft = '1em';
+	        commentBtn.style.outlineStyle = 'none';
+	        commentBtn.onclick = (event) => {          
+	          let comment = commentInput.value;
+
+	          fetch(STORE_COMMENT.replace('id', moment.id), {
+	            method : 'POST',
+	            headers : {
+	              'Content-type' : 'application/json',
+	            },
+	            body : JSON.stringify({
+	              user_id : "{{Auth::guard('users')->user()->id}}",
+	              posts_id : moment.id,
+	              comment : comment
+	            })
+	          })
+	          
+	          commentInput.value = '';
+	        } 
 
 	        //DESCRIPTION 
 	        desc.textContent = moment.description;                                
@@ -191,6 +228,11 @@
 	        if(moment.user_id == user_id){
 	          cardFooter.appendChild(deleteButton);
 	        }        
+
+	         //COMMENT SECTION        
+	        formComment.appendChild(commentInput);
+	        formComment.appendChild(commentBtn);     
+
 	        cardBody1.appendChild(desc);
 	        cardBody2.appendChild(span);                
 	        cardBody2.appendChild(tags);                
@@ -199,6 +241,20 @@
 	        card.appendChild(cardBody1);                
 	        card.appendChild(cardBody2);
 	        card.appendChild(cardFooter);
+	        card.appendChild(formComment);                
+	        fetch(SHOW_COMMENT.replace('id', moment.id))
+	          .then(res => res.json())
+	          .then(comments => {            
+	            comments.forEach(comment => {
+	              console.log(comment);
+	              const commentDiv = document.createElement('div');
+	              const commentedUser = document.createElement('a');         
+	              const SHOWFRIEND = "{{route('showFriend', 'id')}}".replace('id', comment.user_commented);                        
+	              commentDiv.setAttribute('class', 'card-footer text-muted');              
+	              commentDiv.innerHTML = `<a href="${SHOWFRIEND}">${comment.user_commented}</a> ${comment.comment}`;
+	              card.appendChild(commentDiv);
+	            })                        
+	          })
 
 	        loadingElement.style.display = 'none';
 	        
